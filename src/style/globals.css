@@ -139,10 +139,11 @@
   --color-accent: var(--color-green-400);
 
   /* Semantic Colors */
-  --color-background: var(--color-neutral-0);
+  --color-background: var(--color-blue-50);
   --color-foreground: var(--color-neutral-900);
-  --color-muted-foreground: var(--color-neutral-600);
+  --color-muted-foreground: var(--color-neutral-800);
   --color-border: var(--color-border-default);
+  --color-card-background: var(--color-neutral-0);
 
   /* Status Colors */
   --color-success: var(--color-success);
@@ -221,5 +222,26 @@ box-shadow: 0px 1px 2px 0px #0000000D;
 
 
 
+
+
  */
+}
+
+.btn-prime {
+  @apply rounded-[8px] md:rounded-[4px];
+  background: linear-gradient(
+    95.71deg,
+    var(--color-blue-800) 0%,
+    var(--color-blue-600) 100%
+  );
+  color: var(--color-neutral-0);
+
+  padding: 12px 24px;
+  box-shadow: 0px 1px 2px 0px #0000000d;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0px;
+  text-align: center;
+  vertical-align: middle;
 }
