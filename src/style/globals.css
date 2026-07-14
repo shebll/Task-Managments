@@ -228,15 +228,15 @@ box-shadow: 0px 1px 2px 0px #0000000D;
 }
 
 .btn-prime {
-  @apply rounded-md md:rounded-sm;
+  @apply rounded-[8px] md:rounded-[4px];
   background: linear-gradient(
     95.71deg,
     var(--color-blue-800) 0%,
     var(--color-blue-600) 100%
   );
   color: var(--color-neutral-0);
-  border-radius: 4px;
-  padding: 16px 18px;
+
+  padding: 12px 24px;
   box-shadow: 0px 1px 2px 0px #0000000d;
   font-weight: 600;
   font-size: 16px;
