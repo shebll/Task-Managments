@@ -1,5 +1,5 @@
 import React from "react";
-import Logo from "../ui/Logo";
+import Logo from "../shared/Logo";
 
 function AuthHeader() {
   return (

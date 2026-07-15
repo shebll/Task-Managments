@@ -1,5 +1,5 @@
-import FormComponent from "@/components/forms/SignUpFormComponent";
-import SectionTitle from "@/components/shared-ui/SectionTitle";
+import FormComponent from "@/features/auth/components/SignUpFormComponent";
+import SectionTitle from "@/components/shared/SectionTitle";
 
 function SignUp() {
   return (

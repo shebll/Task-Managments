@@ -7,7 +7,7 @@ One uppercase,
 lowercase, and digit
 One special character
  */
-function InfoItem({ completed, text }: Props) {
+function RequirementItem({ completed, text }: Props) {
   return (
     <div className="flex items-center gap-[8px]">
       {completed ? (
@@ -21,4 +21,4 @@ function InfoItem({ completed, text }: Props) {
   );
 }
 
-export default InfoItem;
+export default RequirementItem;
