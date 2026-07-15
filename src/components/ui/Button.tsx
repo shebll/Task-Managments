@@ -2,10 +2,12 @@ import React, { ButtonHTMLAttributes, ReactNode } from "react";
 import clsx from "clsx";
 type Props = {
   children: ReactNode;
+  loading: boolean;
   variant: "primary" | "secondary" | "ghost";
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
-function Button({ children, variant, className, ...props }: Props) {
+function Button({ loading, children, variant, className, ...props }: Props) {
+  console.log(loading);
   const variants = {
     primary: "btn-prime",
     secondary: "text-primary text-[14px] py-3 px-4",
@@ -13,7 +15,16 @@ function Button({ children, variant, className, ...props }: Props) {
   };
 
   return (
-    <button {...props} className={clsx(" ", className, variants[variant])}>
+    <button
+      disabled={loading}
+      {...props}
+      className={clsx(
+        loading ? "cursor-not-allowed" : "cursor-pointer",
+
+        className,
+        variants[variant],
+      )}
+    >
       {children}
     </button>
   );
