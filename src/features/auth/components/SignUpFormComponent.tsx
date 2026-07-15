@@ -7,18 +7,46 @@ import FormField from "./FormField";
 import PasswordRequirements from "./PasswordRequirements";
 import Button from "@/components/ui/Button";
 
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm, useWatch } from "react-hook-form";
+
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useSignup } from "../hooks/use-signup";
+import { redirect } from "next/navigation";
 
 function SignUpFormComponent() {
   const formdata = useForm<signUpType>({
     resolver: zodResolver(signUpSchema),
     mode: "onTouched",
   });
-  const password = formdata.watch("password");
-  console.log(password);
+  const password = useWatch({
+    control: formdata.control,
+    name: "password",
+  });
 
-  const onSubmitHandler: SubmitHandler<signUpType> = (data: signUpType) => {
+  const signupMutation = useSignup();
+
+  const onSubmitHandler: SubmitHandler<signUpType> = (
+    payloadData: signUpType,
+  ) => {
+    const data = {
+      email: payloadData.email,
+      password: payloadData.password,
+      data: {
+        name: payloadData.name,
+        department: payloadData.jobTitle || "",
+      },
+    };
+    signupMutation.mutate(data, {
+      onSuccess: (response) => {
+        response.access_token;
+        redirect("/dashboard");
+      },
+
+      onError: (error) => {
+        formdata.setError("root", { message: error.message });
+        console.log(error);
+      },
+    });
     console.log(data);
   };
   return (
@@ -72,8 +100,16 @@ function SignUpFormComponent() {
       <PasswordRequirements password={password} />
 
       {/* Submit Button */}
-
-      <Button variant="primary" className="w-full">
+      {formdata.formState.errors.root && (
+        <p className="w-full rounded-[4px] bg-[#FFDAD6] pb-3.5 pt-3.5 pr-4 pl-4 text-sm text-error">
+          {formdata.formState.errors.root.message}
+        </p>
+      )}
+      <Button
+        loading={formdata.formState.isSubmitting}
+        variant="primary"
+        className="w-full"
+      >
         Create Account
       </Button>
 
