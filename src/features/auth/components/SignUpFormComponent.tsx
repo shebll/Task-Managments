@@ -12,8 +12,10 @@ import { SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSignup } from "../hooks/use-signup";
 import { redirect } from "next/navigation";
+import { useAuth } from "../hooks/use-auth";
 
 function SignUpFormComponent() {
+  const { login } = useAuth();
   const formdata = useForm<signUpType>({
     resolver: zodResolver(signUpSchema),
     mode: "onTouched",
@@ -38,16 +40,14 @@ function SignUpFormComponent() {
     };
     signupMutation.mutate(data, {
       onSuccess: (response) => {
-        response.access_token;
+        login(response.user, response.access_token, response.refresh_token);
         redirect("/dashboard");
       },
 
       onError: (error) => {
         formdata.setError("root", { message: error.message });
-        console.log(error);
       },
     });
-    console.log(data);
   };
   return (
     <form
