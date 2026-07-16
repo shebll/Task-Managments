@@ -1,5 +1,6 @@
 import React, { ButtonHTMLAttributes, ReactNode } from "react";
 import clsx from "clsx";
+import { Loader } from "lucide-react";
 type Props = {
   children: ReactNode;
   loading: boolean;
@@ -7,7 +8,6 @@ type Props = {
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 function Button({ loading, children, variant, className, ...props }: Props) {
-  console.log(loading);
   const variants = {
     primary: "btn-prime",
     secondary: "text-primary text-[14px] py-3 px-4",
@@ -19,13 +19,14 @@ function Button({ loading, children, variant, className, ...props }: Props) {
       disabled={loading}
       {...props}
       className={clsx(
-        loading ? "cursor-not-allowed" : "cursor-pointer",
+        "flex items-center justify-center gap-2",
+        loading ? "cursor-not-allowed opacity-70" : "cursor-pointer",
 
         className,
         variants[variant],
       )}
     >
-      {children}
+      {loading ? <Loader className="size-6 animate-spin" /> : children}
     </button>
   );
 }
