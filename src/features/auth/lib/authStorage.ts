@@ -5,9 +5,16 @@ export const authStorage = {
   getAccessToken: () => getCookie("access_token"),
   getRefreshToken: () => getCookie("refresh_token"),
 
-  setTokens: (access_token: string, refresh_token: string) => {
-    setCookie("access_token", access_token);
-    setCookie("refresh_token", refresh_token);
+  setTokens: (
+    access_token: string,
+    refresh_token: string,
+    rememberMe?: boolean,
+  ) => {
+    const cookiesConfig = rememberMe
+      ? { maxAge: 60 * 60 * 24 * 30 }
+      : undefined;
+    setCookie("access_token", access_token, cookiesConfig);
+    setCookie("refresh_token", refresh_token, cookiesConfig);
   },
 
   clearTokens: () => {
