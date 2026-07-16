@@ -14,7 +14,7 @@ export function signup(data: SignUpRequest) {
 }
 
 export function login(data: LoginRequest) {
-  return apiClient<LoginResponse>("/auth/v1/login", {
+  return apiClient<LoginResponse>("/auth/v1/token?grant_type=password", {
     method: "POST",
     body: JSON.stringify(data),
   });
