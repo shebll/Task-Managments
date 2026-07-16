@@ -16,6 +16,8 @@ import { useAuth } from "../hooks/use-auth";
 
 function SignUpFormComponent() {
   const { login } = useAuth();
+  const signupMutation = useSignup();
+
   const formdata = useForm<signUpType>({
     resolver: zodResolver(signUpSchema),
     mode: "onTouched",
@@ -24,8 +26,6 @@ function SignUpFormComponent() {
     control: formdata.control,
     name: "password",
   });
-
-  const signupMutation = useSignup();
 
   const onSubmitHandler: SubmitHandler<signUpType> = (
     payloadData: signUpType,
@@ -106,7 +106,7 @@ function SignUpFormComponent() {
         </p>
       )}
       <Button
-        loading={formdata.formState.isSubmitting}
+        loading={signupMutation.isPending}
         variant="primary"
         className="w-full"
       >

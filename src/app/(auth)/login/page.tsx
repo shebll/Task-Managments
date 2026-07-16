@@ -1,6 +1,6 @@
 "use client";
-import FormFooter from "@/features/auth/components/ui/FormFooter";
 import SectionTitle from "@/components/shared/SectionTitle";
+import LoginFrom from "@/features/auth/components/LoginForm";
 
 function Login() {
   return (
@@ -12,6 +12,7 @@ function Login() {
       />
 
       {/* form component */}
+      <LoginFrom />
 
       {/* <FormComponent /> */}
     </div>
