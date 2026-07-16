@@ -1,6 +1,5 @@
 import { authStorage } from "@/features/auth/lib/authStorage";
 import { LoginResponse } from "@/features/auth/types/types";
-import { redirect } from "next/navigation";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
@@ -12,7 +11,7 @@ export async function apiClient<T>(
   const response = await fetch(`${API_URL}${endpoint}`, {
     ...options,
     headers: {
-      apikey: API_KEY,
+      Apikey: API_KEY || "",
       "Content-Type": "application/json",
       ...(authStorage.getAccessToken() && {
         Authorization: `Bearer ${authStorage.getAccessToken()}`,
