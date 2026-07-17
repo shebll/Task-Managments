@@ -10,10 +10,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "../schema/login-schema";
 import { useLogin } from "../hooks/use-login";
 import { useAuth } from "../hooks/use-auth";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 
 function LoginFrom() {
+  const router = useRouter();
   const { login } = useAuth();
   const loginMutation = useLogin();
 
@@ -33,7 +34,7 @@ function LoginFrom() {
             response.refresh_token,
             data.rememberMe,
           );
-          redirect("/projects");
+          router.replace("/projects");
         },
 
         onError: (error) => {
@@ -67,6 +68,7 @@ function LoginFrom() {
         <label className="flex items-center gap-3 cursor-pointer">
           <input
             type="checkbox"
+            checked={false}
             {...formdata.register("rememberMe")}
             className="size-5"
           />
