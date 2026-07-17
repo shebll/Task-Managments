@@ -19,3 +19,9 @@ export function login(data: LoginRequest) {
     body: JSON.stringify(data),
   });
 }
+
+export function logout() {
+  return apiClient<void>("/auth/v1/logout", {
+    method: "POST",
+  });
+}

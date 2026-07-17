@@ -8,11 +8,13 @@ import { ArrowLeft, ArrowRight, LogOut } from "lucide-react";
 import Logo from "../shared/Logo";
 import { useDashboard } from "@/features/dashboard/dashboard-context";
 import Image from "next/image";
+import { useLogout } from "@/features/auth/hooks/useLogout";
 
 export default function Sidebar() {
   const pathname = usePathname();
 
   const { sidebarCollapsed, toggleSidebar } = useDashboard();
+  const { mutate: logoutUser, isPending } = useLogout();
 
   return (
     <aside
@@ -63,6 +65,8 @@ export default function Sidebar() {
       </Button>
       <Button
         className="flex items-center justify-start gap-[12px]"
+        onClick={() => logoutUser()}
+        disabled={isPending}
         variant="secondary"
       >
         <LogOut size={18} className="text-[#BA1A1A]" />

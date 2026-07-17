@@ -68,12 +68,14 @@ function LoginFrom() {
         <label className="flex items-center gap-3 cursor-pointer">
           <input
             type="checkbox"
-            checked={false}
+
             {...formdata.register("rememberMe")}
-            className="size-5"
+            className="size-4 rounded border border-[#C3C6D6] accent-[#0052CC] cursor-pointer"
           />
 
-          <span className="text-sm font-medium">Remember Me</span>
+          <span className="text-sm font-medium text-[#434654]">
+            Remember Me
+          </span>
         </label>
 
         <a href="/forgot-password" className="text-primary font-semibold">
@@ -97,12 +99,14 @@ function LoginFrom() {
         </p>
       )}
 
-      {/* Form Footer */}
-      <FormFooter
-        text="Don't have an account? "
-        linkText="Sign Up"
-        linkHref="/sign-up"
-      />
+      <div className="w-full border-t mt-6 border-[#C3C6D626] flex justify-center">
+        {/* Form Footer */}
+        <FormFooter
+          text="Don't have an account? "
+          linkText="Sign Up"
+          linkHref="/sign-up"
+        />
+      </div>
     </form>
   );
 }
