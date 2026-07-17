@@ -40,7 +40,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistInter.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-background text-foreground max-w-7xl m-auto pr-6 md:pr-10 pl-6 md:pl-10">
+      <body className="min-h-full flex flex-col bg-background text-foreground ">
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>
