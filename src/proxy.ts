@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const protectedRoutes = ["/dashboard"];
+const protectedRoutes = ["/projects"];
 const authRoutes = ["/login", "/sign-up"];
 
 export function proxy(request: NextRequest) {
@@ -12,7 +12,7 @@ export function proxy(request: NextRequest) {
   const isAuthenticated = !!(accessToken || refreshToken);
 
   if (isAuthenticated && authRoutes.includes(pathname)) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    return NextResponse.redirect(new URL("/projects", request.url));
   }
 
   if (protectedRoutes.includes(pathname) && !isAuthenticated) {
@@ -23,5 +23,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/login", "/sign-up"],
+  matcher: ["/projects/:path*", "/login", "/sign-up"],
 };
