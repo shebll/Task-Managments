@@ -41,7 +41,7 @@ function SignUpFormComponent() {
     signupMutation.mutate(data, {
       onSuccess: (response) => {
         login(response.user, response.access_token, response.refresh_token);
-        redirect("/dashboard");
+        redirect("/projects");
       },
 
       onError: (error) => {

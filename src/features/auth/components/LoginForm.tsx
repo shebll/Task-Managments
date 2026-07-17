@@ -33,7 +33,7 @@ function LoginFrom() {
             response.refresh_token,
             data.rememberMe,
           );
-          redirect("/dashboard");
+          redirect("/projects");
         },
 
         onError: (error) => {
