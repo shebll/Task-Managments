@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const protectedRoutes = ["/projects"];
-const authRoutes = ["/login", "/sign-up"];
+const protectedRoutes = [
+  "/projects",
+  "/project-epics",
+  "/project-tasks",
+  "/project-members",
+  "/project-details",
+];
+const authRoutes = ["/login", "/sign-up", "/forgot-password"];
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -11,17 +17,29 @@ export function proxy(request: NextRequest) {
 
   const isAuthenticated = !!(accessToken || refreshToken);
 
-  if (isAuthenticated && authRoutes.includes(pathname)) {
+  const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
+  const isProtectedRoute = protectedRoutes.some((route) =>
+    pathname.startsWith(route),
+  );
+
+  // Redirect authenticated users away from auth pages
+  if (isAuthenticated && isAuthRoute) {
     return NextResponse.redirect(new URL("/projects", request.url));
   }
 
-  if (protectedRoutes.includes(pathname) && !isAuthenticated) {
-    return NextResponse.redirect(new URL("/login", request.url));
+  // Redirect unauthenticated users to login
+  if (isProtectedRoute && !isAuthenticated) {
+    const loginUrl = new URL("/login", request.url);
+    loginUrl.searchParams.set("redirect", pathname);
+    return NextResponse.redirect(loginUrl);
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/projects/:path*", "/login", "/sign-up"],
+  matcher: [
+    // Exclude API routes, static files, image optimizations, and .png files
+    "/((?!api|_next/static|_next/image|.*\\.png$).*)",
+  ],
 };
