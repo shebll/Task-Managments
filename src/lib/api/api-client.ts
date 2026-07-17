@@ -4,6 +4,35 @@ import { LoginResponse } from "@/features/auth/types/types";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY;
 
+/**
+ * Refreshes the access token using the refresh token.
+ * Uses a plain fetch to avoid the 401 interceptor (prevents infinite recursion).
+ */
+async function refreshAccessToken(): Promise<LoginResponse> {
+  const refreshToken = authStorage.getRefreshToken();
+  if (!refreshToken) {
+    throw new Error("No refresh token available");
+  }
+
+  const response = await fetch(
+    `${API_URL}/auth/v1/token?grant_type=refresh_token`,
+    {
+      method: "POST",
+      headers: {
+        Apikey: API_KEY || "",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ refresh_token: refreshToken }),
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error("Token refresh failed");
+  }
+
+  return response.json();
+}
+
 export async function apiClient<T>(
   endpoint: string,
   options?: RequestInit,
@@ -24,15 +53,7 @@ export async function apiClient<T>(
 
   if (response.status === 401) {
     try {
-      const refreshResponse = await apiClient<LoginResponse>(
-        "/auth/v1/token?grant_type=refresh_token",
-        {
-          method: "POST",
-          body: JSON.stringify({
-            refresh_token: authStorage.getRefreshToken(),
-          }),
-        },
-      );
+      const refreshResponse = await refreshAccessToken();
 
       authStorage.setTokens(
         refreshResponse.access_token,

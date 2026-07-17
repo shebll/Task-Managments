@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { User } from "../types/types";
 import { authStorage } from "../lib/authStorage";
 
 export function useAuth() {
-  const [user, setUser] = useState<User | null>();
+  const [user, setUser] = useState<User | null>(() =>
+    authStorage.getUserData(),
+  );
 
   const login = (
     user: User,
@@ -16,16 +18,16 @@ export function useAuth() {
     authStorage.setUserData(user);
   };
 
-  const logout = () => {
+  const logout = useCallback(() => {
     authStorage.clearTokens();
     authStorage.clearUserData();
     setUser(null);
-  };
+  }, []);
 
   return {
     login,
     logout,
     user,
-    isAuthenticated: !!authStorage.getAccessToken(),
+    isAuthenticated: !!user || !!authStorage.getAccessToken(),
   };
 }
