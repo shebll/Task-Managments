@@ -10,9 +10,6 @@ export default function DashboardHeader() {
   useEffect(() => {
     setUser(authStorage.getUserData());
   }, []);
-
-  console.log(user);
-
   return (
     <header className="border-b border-[#0000001A] px-6 py-3 flex justify-end">
       <div className="flex justify-end items-center gap-3.5 pl-4 border-l border-[#C3C6D64D] ">
@@ -28,8 +25,6 @@ export default function DashboardHeader() {
           {user?.user_metadata.name.split(" ")[0].slice(0, 1).toUpperCase()}
           {user?.user_metadata.name.split(" ")[1].slice(0, 1).toUpperCase()}
         </div>
-
-        {/* <Avatar /> */}
       </div>
     </header>
   );

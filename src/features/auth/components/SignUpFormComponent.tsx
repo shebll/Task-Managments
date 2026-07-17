@@ -11,10 +11,11 @@ import { SubmitHandler, useForm, useWatch } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSignup } from "../hooks/use-signup";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useAuth } from "../hooks/use-auth";
 
 function SignUpFormComponent() {
+  const router = useRouter();
   const { login } = useAuth();
   const signupMutation = useSignup();
 
@@ -41,7 +42,7 @@ function SignUpFormComponent() {
     signupMutation.mutate(data, {
       onSuccess: (response) => {
         login(response.user, response.access_token, response.refresh_token);
-        redirect("/projects");
+        router.replace("/projects");
       },
 
       onError: (error) => {

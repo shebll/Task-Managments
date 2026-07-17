@@ -1,13 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, ReactNode } from "react";
-
-type User = {
-  id: string;
-  name: string;
-  title: string;
-  avatar?: string;
-};
+import { User } from "../auth/types/types";
 
 type DashboardContextType = {
   sidebarCollapsed: boolean;

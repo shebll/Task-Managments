@@ -1,5 +1,3 @@
-// components/layout/dashboard-layout.tsx
-
 import DashboardHeader from "./DashboardHeader";
 import Sidebar from "./Sidebar";
 
@@ -16,8 +14,6 @@ export default function DashboardLayout({
         <DashboardHeader />
 
         <main className="flex-1 overflow-y-auto p-6">{children}</main>
-
-        {/* <MobileNav /> */}
       </div>
     </div>
   );

@@ -9,12 +9,7 @@ type Props = {
 function Layout({ children }: Props) {
   return (
     <DashboardProvider>
-      <DashboardLayout>
-        {/* <div className="flex items-start h-full"> */}
-
-        {children}
-        {/* </div> */}
-      </DashboardLayout>
+      <DashboardLayout>{children}</DashboardLayout>
     </DashboardProvider>
   );
 }

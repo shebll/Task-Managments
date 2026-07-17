@@ -24,7 +24,11 @@ export const authStorage = {
 
   setUserData: (user: User) =>
     localStorage.setItem("userData", JSON.stringify(user)),
-  getUserData: () => localStorage.getItem("userData"),
+  getUserData: (): User | null => {
+    if (typeof window === "undefined") return null;
+    const data = localStorage.getItem("userData");
+    return data ? (JSON.parse(data) as User) : null;
+  },
 
   clearUserData: () => localStorage.removeItem("userData"),
 };
