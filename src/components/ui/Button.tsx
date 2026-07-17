@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { Loader } from "lucide-react";
 type Props = {
   children: ReactNode;
-  loading: boolean;
+  loading?: boolean;
   variant: "primary" | "secondary" | "ghost";
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
