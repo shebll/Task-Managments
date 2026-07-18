@@ -53,7 +53,7 @@ function SignUpFormComponent() {
   return (
     <form
       onSubmit={formdata.handleSubmit(onSubmitHandler)}
-      className="flex flex-col items-center gap-[24px] max-w-120"
+      className="flex flex-col items-center gap-6 max-w-120"
     >
       {/* Form Fields */}
       <FormField
@@ -102,7 +102,7 @@ function SignUpFormComponent() {
 
       {/* Submit Button */}
       {formdata.formState.errors.root && (
-        <p className="w-full rounded-[4px] bg-[#FFDAD6] pb-3.5 pt-3.5 pr-4 pl-4 text-sm text-error">
+        <p className="w-full rounded-sm bg-bg-error pb-3.5 pt-3.5 pr-4 pl-4 text-sm text-error">
           {formdata.formState.errors.root.message}
         </p>
       )}

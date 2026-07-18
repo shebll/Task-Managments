@@ -3,7 +3,7 @@ import SectionTitle from "@/components/shared/SectionTitle";
 
 function SignUp() {
   return (
-    <div className="bg-card-background p-12 rounded-md flex flex-col items-center">
+    <div className="bg-bg-card p-12 rounded-md flex flex-col items-center">
       {/* section title component */}
       <SectionTitle
         title="Create your workspace"

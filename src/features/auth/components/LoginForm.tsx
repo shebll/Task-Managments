@@ -46,7 +46,7 @@ function LoginFrom() {
   return (
     <form
       onSubmit={formdata.handleSubmit(onSubmitHandler)}
-      className="flex flex-col items-center gap-[24px] md:w-120 "
+      className="flex flex-col items-center gap-6 md:w-120 "
     >
       {/* Form Fields */}
 
@@ -70,10 +70,10 @@ function LoginFrom() {
             type="checkbox"
 
             {...formdata.register("rememberMe")}
-            className="size-4 rounded border border-[#C3C6D6] accent-[#0052CC] cursor-pointer"
+            className="size-4 rounded border border-border-checkbox accent-accent-checkbox cursor-pointer"
           />
 
-          <span className="text-sm font-medium text-[#434654]">
+          <span className="text-sm font-medium text-text-secondary">
             Remember Me
           </span>
         </label>
@@ -94,12 +94,12 @@ function LoginFrom() {
       </Button>
 
       {formdata.formState.errors.root && (
-        <p className="w-full rounded-[4px] bg-[#FFDAD6] pb-3.5 pt-3.5 pr-4 pl-4 text-sm text-error">
+        <p className="w-full rounded-sm bg-bg-error pb-3.5 pt-3.5 pr-4 pl-4 text-sm text-error">
           {formdata.formState.errors.root.message}
         </p>
       )}
 
-      <div className="w-full border-t mt-6 border-[#C3C6D626] flex justify-center">
+      <div className="w-full border-t mt-6 border-border-divider flex justify-center">
         {/* Form Footer */}
         <FormFooter
           text="Don't have an account? "

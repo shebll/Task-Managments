@@ -13,40 +13,71 @@
 
 :root {
   /* ============================================
-     COLORS - PRIMITIVE (Raw Values)
+     COLORS - PRIMITIVE (Raw Values from Figma)
      ============================================ */
 
   /* Primary Brand Color - Deep Blue */
   --color-blue-50: #f0f5ff; /* Surface Low */
+  --color-blue-100: #dbeafe; /* Sidebar background */
   --color-blue-200: #d7e2ff; /* Surface Highest */
   --color-blue-600: #0052cc; /* Primary Container */
   --color-blue-800: #003d9b; /* Primary  */
+  --color-blue-900: #041b3c; /* Dark text / Slate Neutrals */
 
   /* Neutral Color - Grays (Text, Borders, Backgrounds) */
   --color-neutral-0: #ffffff; /* bg for card */
   --color-neutral-50: #fafbfc;
   --color-neutral-100: #f8faff;
   --color-neutral-200: #f3f4f6;
-  --color-neutral-300: #c3c6d6; /* inputs tips */
-  --color-neutral-400: #9ca3af; /*  Slate Neutrals*/
-  --color-neutral-500: #737685; /* placeholder color */
+  --color-neutral-300: #c3c6d6; /* inputs tips / hint text */
+  --color-neutral-400: #9ca3af; /* Slate Neutrals */
+  --color-neutral-500: #737685; /* placeholder color / muted icon */
   --color-neutral-600: #4b5563;
-  --color-neutral-700: #434654; /* body text color */
-  --color-neutral-800: #4f5f7b; /* Slate Neutrals gust color */
-  --color-neutral-900: #041b3c; /* Slate Neutrals */
+  --color-neutral-700: #434654; /* body text color / secondary text */
+  --color-neutral-800: #4f5f7b; /* Slate Neutrals ghost text */
+  --color-neutral-900: #041b3c; /* Slate Neutrals / foreground */
 
-  /* Status Colors */
-  --color-success: #82f9be;
-  --color-error: #e5483e;
-  --color-warning: #f59e0b;
-  --color-info: #7b9cff;
+  /* Status & Feedback Colors */
+  --color-red-50: #ffdad6; /* error background */
+  --color-red-600: #ba1a1a; /* destructive / danger text */
+  --color-red-700: #e5483e; /* error text */
+  --color-green-600: #004e32; /* success icon */
+
+  --color-status-success: #82f9be;
+  --color-status-error: #e5483e;
+  --color-status-warning: #f59e0b;
+  --color-status-info: #7b9cff;
+
+  /* Borders */
+  --color-border-subtle: #0000001a; /* header bottom border */
+  --color-border-light: #c3c6d64d; /* divider lines */
+
+  /* Gradient for Primary Button */
+  --gradient-primary: linear-gradient(
+    95.71deg,
+    var(--color-blue-800) 0%,
+    var(--color-blue-600) 100%
+  );
+
+  /* ============================================
+     SHADOWS (From Figma Design)
+     ============================================ */
+  --shadow-button: 0px 1px 2px 0px #0000000d;
+  --shadow-xs: 0px 1px 2px 0px #0000000d;
+  --shadow-sm: 0px 4px 6px -4px #0000001a;
+  --shadow-md: 0px 10px 15px -3px #0000001a;
+  --shadow-lg: 0px 24px 48px -12px #041b3c0f;
+  --shadow-xl: 0px 24px 48px -12px #041b3c1f;
+  --shadow-card: 0px 1px 3px 0px #0000001a;
+  --shadow-primary: 0px 25px 50px -12px #003d9b4d;
+  --shadow-top: 0px -4px 24px 0px #041b3c0f;
 
   /* ============================================
      BORDER RADIUS
      ============================================ */
   --radius-xs: 2px; /* Minimal rounding */
   --radius-sm: 4px; /* Small buttons/inputs */
-  --radius-md: 8px; /* Medium - buttons, small components */
+  --radius-md: 8px; /* Medium - buttons, small components, avatar */
   --radius-lg: 12px; /* Large - cards, containers */
   --radius-xl: 16px; /* Extra large - large cards */
   --radius-2xl: 24px; /* Very large - modals */
@@ -56,7 +87,6 @@
   /* ============================================
      SPACING - 8px Grid System
      ============================================ */
-
   --space-0: 0px;
   --space-1: 4px;
   --space-2: 8px;
@@ -68,7 +98,7 @@
   --space-8: 32px; /* 4 grid units - large spacing */
   --space-9: 36px; /* 4.5 grid units */
   --space-10: 40px; /* 5 grid units - sidebar padding */
-  --space-12: 48px; /* 6 grid units - large section spacing */
+  --space-12: 48px; /* 6 grid units - large section spacing, card padding */
   --space-14: 56px; /* 7 grid units */
   --space-16: 64px; /* 8 grid units - hero spacing */
   --space-20: 80px; /* 10 grid units */
@@ -77,14 +107,15 @@
   /* ============================================
      TYPOGRAPHY - SIZES (Font Size)
      ============================================ */
-  --text-xs: 11px; /* Tiny - captions, badges */
-  --text-sm: 14px; /* Small - labels, secondary text */
-  --text-base: 16px; /* Base - default body text */
+  --text-2xs: 10px; /* Tiny - department labels, badges */
+  --text-xs: 11px; /* Extra small - captions, requirement items */
+  --text-sm: 14px; /* Small - labels, secondary text, description */
+  --text-base: 16px; /* Base - default body text, input text, button text */
   --text-md: 18px; /* Medium - slightly larger body */
   --text-lg: 20px; /* Large - section headers */
   --text-xl: 24px; /* Extra Large - subheadings */
   --text-2xl: 28px; /* 2XL - headings */
-  --text-3xl: 30px; /* 3XL - large headings */
+  --text-3xl: 30px; /* 3XL - large headings (section titles) */
   --text-4xl: 32px; /* 4XL - very large headings */
   --text-5xl: 48px; /* 5XL - display headings */
   --text-6xl: 56px; /* 6XL - hero titles */
@@ -92,7 +123,6 @@
   /* ============================================
      TYPOGRAPHY - WEIGHTS (Font Weight)
      ============================================ */
-
   --font-weight-light: 300;
   --font-weight-normal: 400;
   --font-weight-medium: 500;
@@ -103,18 +133,19 @@
   /* ============================================
      TYPOGRAPHY - LINE HEIGHT
      ============================================ */
-
   --line-height-tight: 1; /* No extra space (headings) */
   --line-height-snug: 1.25; /* Tight spacing */
   --line-height-normal: 1.5; /* Default body text spacing */
   --line-height-relaxed: 1.625; /* Comfortable reading */
   --line-height-loose: 2; /* Very open spacing */
+  --line-height-9: 36px; /* 36px - section title line height */
+  --line-height-7: 28px; /* 28px - logo line height */
+  --line-height-6: 24px; /* 24px - button text line height */
 
   /* ============================================
      TYPOGRAPHY - LETTER SPACING
      ============================================ */
-
-  --letter-spacing-tight: -1.2px; /* Headings - brings them closer */
+  --letter-spacing-tight: -0.075px; /* -0.075px - section title tracking */
   --letter-spacing-normal: 0px; /* Default */
   --letter-spacing-wide: 2.4px; /* Small labels - opens them up */
   --letter-spacing-wider: 10px; /* ALL CAPS labels - maximum spacing */
@@ -122,73 +153,161 @@
   /* ============================================
      FONT FAMILIES
      ============================================ */
-
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 }
 
 @theme inline {
   /* ============================================
-     COLOR THEME
+     SEMANTIC COLOR TOKENS
      ============================================ */
 
-  /* Brand Colors */
-  --color-primary: var(--color-blue-800);
-  --color-primary-light: var(--color-blue-600);
-  --color-primary-dark: var(--color-blue-900);
-  --color-accent: var(--color-green-400);
+  /* Text Colors */
+  --color-text-primary: var(--color-neutral-900); /* #041B3C - headings, body */
+  --color-text-secondary: var(
+    --color-neutral-700
+  ); /* #434654 - labels, body text */
+  --color-text-muted: var(
+    --color-neutral-800
+  ); /* #4F5F7B - ghost button, muted */
+  --color-text-placeholder: var(
+    --color-neutral-500
+  ); /* #737685 - input placeholders */
+  --color-text-hint: var(--color-neutral-300); /* #C3C6D6 - hints, tips */
+  --color-text-inverse: var(--color-neutral-0); /* #FFFFFF - on primary bg */
+  --color-text-link: var(
+    --color-blue-800
+  ); /* #003D9B - link text, forgot password */
+  --color-text-success: var(--color-green-600); /* #004E32 - requirement met */
+  --color-text-destructive: var(
+    --color-red-600
+  ); /* #BA1A1A - logout, destructive actions */
+  --color-text-error: var(--color-red-700); /* #E5483E - error messages */
+  --color-text-primary-accent: var(
+    --color-blue-800
+  ); /* #003D9B - primary accent text */
 
-  /* Semantic Colors */
-  --color-background: var(--color-blue-50);
-  --color-foreground: var(--color-neutral-900);
-  --color-muted-foreground: var(--color-neutral-800);
-  --color-border: var(--color-border-default);
-  --color-card-background: var(--color-neutral-0);
+  /* Background Colors */
+  --color-bg-primary: var(--color-blue-50); /* #F0F5FF - main background */
+  --color-bg-surface: var(--color-neutral-0); /* #FFFFFF - cards, surfaces */
+  --color-bg-sidebar: var(--color-blue-100); /* #DBEAFE - sidebar background */
+  --color-bg-input: var(--color-blue-200); /* #D7E2FF- input background */
+  --color-bg-error: var(--color-red-50); /* #FFDAD6 - error message bg */
+  --color-bg-active: var(--color-neutral-0); /* #FFFFFF - active nav link bg */
+  --color-bg-card: var(--color-neutral-0); /* #FFFFFF - card background */
+  --color-bg-avatar: var(--color-blue-600); /* #0052CC - avatar circle */
 
-  /* Status Colors */
-  --color-success: var(--color-success);
-  --color-error: var(--color-error);
-  --color-warning: var(--color-warning);
-  --color-info: var(--color-info);
+  /* Border Colors */
+  --color-border-default: var(
+    --color-border-subtle
+  ); /* #0000001A - header bottom */
+  --color-border-divider: var(
+    --color-border-light
+  ); /* #C3C6D64D - divider lines */
+  --color-border-input: transparent; /* default input border */
+  --color-border-input-hover: var(--color-blue-600); /* focus input border */
+  --color-border-input-error: var(--color-red-700); /* error input border */
+  --color-border-active: var(--color-blue-600); /* active / clickable border */
+  --color-border-checkbox: var(
+    --color-neutral-300
+  ); /* #C3C6D6 - checkbox border */
+
+  /* Button Colors */
+  --color-button-secondary-text: var(
+    --color-blue-800
+  ); /* #003D9B - secondary btn text */
+  --color-button-ghost-text: var(
+    --color-neutral-800
+  ); /* #4F5F7B - ghost btn text */
+  --color-button-primary-gradient: var(--gradient-primary);
+  --color-button-primary-shadow: var(--shadow-button);
+
+  /* Avatar */
+  --color-avatar-text: var(--color-neutral-0); /* #FFFFFF - initials text */
+
+  /* Sidebar */
+  --color-sidebar-active-text: var(
+    --color-blue-800
+  ); /* #003D9B - active link text */
+  --color-sidebar-icon: var(--color-neutral-900); /* #041B3C - icon color */
+  --color-sidebar-danger: var(--color-red-600); /* #BA1A1A - logout icon/text */
+
+  /* Accent / Interactive */
+  --color-accent-checkbox: var(
+    --color-blue-600
+  ); /* #0052CC - checkbox accent */
+
+  /* Status */
+  --color-status-success-bg: var(--color-status-success);
+  --color-status-error-bg: var(--color-status-error);
+  --color-status-warning-bg: var(--color-status-warning);
+  --color-status-info-bg: var(--color-status-info);
 
   /* ============================================
-     TYPOGRAPHY
+     TYPOGRAPHY SEMANTIC TOKENS
      ============================================ */
 
   --font-family-sans: var(--font-sans);
   --font-family-mono: var(--font-mono);
 
   /* Font Sizes */
-  --font-size-xs: var(--text-xs);
-  --font-size-sm: var(--text-sm);
-  --font-size-base: var(--text-base);
-  --font-size-md: var(--text-md);
-  --font-size-lg: var(--text-lg);
-  --font-size-xl: var(--text-xl);
-  --font-size-2xl: var(--text-2xl);
-  --font-size-3xl: var(--text-3xl);
-  --font-size-4xl: var(--text-4xl);
-  --font-size-5xl: var(--text-5xl);
-  --font-size-6xl: var(--text-6xl);
+  --font-size-2xs: var(--text-2xs); /* 10px */
+  --font-size-xs: var(--text-xs); /* 11px */
+  --font-size-sm: var(--text-sm); /* 14px */
+  --font-size-base: var(--text-base); /* 16px */
+  --font-size-md: var(--text-md); /* 18px */
+  --font-size-lg: var(--text-lg); /* 20px */
+  --font-size-xl: var(--text-xl); /* 24px */
+  --font-size-2xl: var(--text-2xl); /* 28px */
+  --font-size-3xl: var(--text-3xl); /* 30px */
+  --font-size-4xl: var(--text-4xl); /* 32px */
+  --font-size-5xl: var(--text-5xl); /* 48px */
+  --font-size-6xl: var(--text-6xl); /* 56px */
+
+  /* Font Weights */
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-black: 900;
+
+  /* Line Heights */
+  --line-height-tight: 1;
+  --line-height-snug: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.625;
+  --line-height-loose: 2;
+  --line-height-9: 36px;
+  --line-height-7: 28px;
+  --line-height-6: 24px;
+
+  /* Letter Spacing */
+  --tracking-tight: var(--letter-spacing-tight);
+  --tracking-normal: var(--letter-spacing-normal);
+  --tracking-wide: var(--letter-spacing-wide);
+  --tracking-wider: var(--letter-spacing-wider);
 
   /* ============================================
-     padding
+     SPACING SEMANTIC TOKENS
      ============================================ */
-
   --spacing-0: var(--space-0);
   --spacing-1: var(--space-1);
   --spacing-2: var(--space-2);
   --spacing-3: var(--space-3);
   --spacing-4: var(--space-4);
+  --spacing-5: var(--space-5);
   --spacing-6: var(--space-6);
   --spacing-8: var(--space-8);
+  --spacing-10: var(--space-10);
   --spacing-12: var(--space-12);
   --spacing-16: var(--space-16);
+  --spacing-20: var(--space-20);
+  --spacing-24: var(--space-24);
 
   /* ============================================
-     BORDER RADIUS
+     BORDER RADIUS SEMANTIC TOKENS
      ============================================ */
-
   --radius-xs: var(--radius-xs);
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);
@@ -198,50 +317,52 @@
   --radius-full: var(--radius-full);
 
   /* ============================================
-     SHADOWS
+     SHADOW SEMANTIC TOKENS
      ============================================ */
-
-  --shadow-none: var(--shadow-none);
   --shadow-xs: var(--shadow-xs);
   --shadow-sm: var(--shadow-sm);
   --shadow-md: var(--shadow-md);
   --shadow-lg: var(--shadow-lg);
   --shadow-xl: var(--shadow-xl);
+  --shadow-button: var(--shadow-button);
+  --shadow-card: var(--shadow-card);
   --shadow-primary: var(--shadow-primary);
+  --shadow-top: var(--shadow-top);
 
-  /* box-shadow: 0px 24px 48px 0px #041B3C0F;
-  box-shadow: 0px 1px 2px 0px #0000000D;
-  box-shadow: 0px 25px 50px -12px #003D9B4D;
-box-shadow: 0px 4px 6px -4px #0000001A;
-
-box-shadow: 0px 10px 15px -3px #0000001A;
-box-shadow: 0px 24px 48px -12px #041B3C0F;
-box-shadow: 0px -4px 24px 0px #041B3C0F;
-box-shadow: 0px 24px 48px -12px #041B3C1F;
-box-shadow: 0px 1px 2px 0px #0000000D;
-
-
-
-
-
- */
+  /* ============================================
+     BACKWARD COMPATIBILITY (existing tokens)
+     ============================================ */
+  --color-primary: var(--color-blue-800);
+  --color-primary-light: var(--color-blue-600);
+  --color-background: var(--color-bg-primary);
+  --color-foreground: var(--color-text-primary);
+  --color-muted-foreground: var(--color-text-muted);
+  --color-card-background: var(--color-bg-card);
+  --color-border: var(--color-border-default);
+  --color-success: var(--color-status-success);
+  --color-error: var(--color-status-error);
+  --color-warning: var(--color-status-warning);
+  --color-info: var(--color-status-info);
 }
 
+/* ============================================
+   COMPONENT-SPECIFIC STYLES
+   ============================================ */
 .btn-prime {
-  @apply rounded-[8px] md:rounded-[4px];
-  background: linear-gradient(
-    95.71deg,
-    var(--color-blue-800) 0%,
-    var(--color-blue-600) 100%
-  );
-  color: var(--color-neutral-0);
-
-  padding: 12px 24px;
-  box-shadow: 0px 1px 2px 0px #0000000d;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: 0px;
+  background: var(--gradient-primary);
+  color: var(--color-text-inverse);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-sm);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--text-base);
+  line-height: var(--line-height-6);
+  box-shadow: var(--shadow-button);
   text-align: center;
   vertical-align: middle;
+}
+
+@media (min-width: 768px) {
+  .btn-prime {
+    border-radius: var(--radius-sm);
+  }
 }

@@ -11,12 +11,12 @@ function Input({ error, className, ...props }: Props) {
       {...props}
       className={clsx(
         `
-        w-full rounded-[4px]
-        bg-blue-100
+        w-full rounded-sm
+        bg-bg-input
         py-3.5 px-4
-        text-[16px]
+        text-base
         border-2
-        placeholder:text-[#737685]
+        placeholder:text-text-placeholder
         focus-visible:outline-0
         `,
         error
