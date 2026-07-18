@@ -13,14 +13,19 @@ import { useAuth } from "../hooks/use-auth";
 import { useRouter } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 
+import { useMediaQuery } from "usehooks-ts";
+
 function LoginFrom() {
+  const isDesktop = useMediaQuery("(min-width: 768px)", {
+    initializeWithValue: false,
+  });
   const router = useRouter();
   const { login } = useAuth();
   const loginMutation = useLogin();
 
   const formdata = useForm<loginType>({
     resolver: zodResolver(loginSchema),
-    mode: "onTouched",
+    mode: "onChange",
   });
 
   const onSubmitHandler: SubmitHandler<loginType> = (data: loginType) => {
@@ -46,16 +51,18 @@ function LoginFrom() {
   return (
     <form
       onSubmit={formdata.handleSubmit(onSubmitHandler)}
-      className="flex flex-col items-center gap-6 md:w-120 "
+      className="flex flex-col items-center gap-6 w-full md:w-120  "
     >
       {/* Form Fields */}
 
       <FormField
         formdata={formdata}
-        label="Email"
+        label={isDesktop ? "Email" : "Email Address"}
         name="email"
         type="email"
-        placeholder="yourname@company.com"
+        placeholder={
+          isDesktop ? "yourname@company.com" : "curator@workspace.com"
+        }
       />
       <FormField
         formdata={formdata}

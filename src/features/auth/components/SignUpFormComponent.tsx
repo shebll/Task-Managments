@@ -16,7 +16,9 @@ import { useAuth } from "../hooks/use-auth";
 import { useMediaQuery } from "usehooks-ts";
 
 function SignUpFormComponent() {
-  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const isDesktop = useMediaQuery("(min-width: 768px)", {
+    initializeWithValue: false,
+  });
 
   const router = useRouter();
   const { login } = useAuth();
@@ -24,7 +26,7 @@ function SignUpFormComponent() {
 
   const formdata = useForm<signUpType>({
     resolver: zodResolver(signUpSchema),
-    mode: "onTouched",
+    mode: "onChange",
   });
   const password = useWatch({
     control: formdata.control,
