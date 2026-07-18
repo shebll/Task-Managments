@@ -2,19 +2,35 @@
 
 import { dashboardLinks } from "@/lib/navigation";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Button from "../ui/Button";
 import { ArrowLeft, ArrowRight, LogOut } from "lucide-react";
 import Logo from "../shared/Logo";
 import { useDashboard } from "@/features/dashboard/dashboard-context";
 import Image from "next/image";
 import { useLogout } from "@/features/auth/hooks/useLogout";
+import { useAuth } from "@/features/auth/hooks/use-auth";
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
 
   const { sidebarCollapsed, toggleSidebar } = useDashboard();
-  const { mutate: logoutUser, isPending } = useLogout();
+  const { logout } = useAuth();
+  const logoutMutation = useLogout();
+
+  const handleLogout = () => {
+    logoutMutation.mutate(undefined, {
+      onSuccess: (response) => {
+        logout();
+        router.replace("/login");
+      },
+      onError: (error) => {
+        logout();
+        router.replace("/login");
+      },
+    });
+  };
 
   return (
     <aside
@@ -65,8 +81,8 @@ export default function Sidebar() {
       </Button>
       <Button
         className="flex items-center justify-start gap-3"
-        onClick={() => logoutUser()}
-        disabled={isPending}
+        onClick={handleLogout}
+        disabled={logoutMutation.isPending}
         variant="secondary"
       >
         <LogOut size={18} className="text-sidebar-danger" />
