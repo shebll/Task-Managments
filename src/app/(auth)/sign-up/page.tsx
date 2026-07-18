@@ -3,10 +3,7 @@ import SectionTitle from "@/components/shared/SectionTitle";
 
 function SignUp() {
   return (
-    <div
-      className="md:bg-bg-card p-0 md:p-12 rounded-md flex w-full md:w-fit
-     flex-col items-center"
-    >
+    <div className="md:bg-bg-card p-0 md:p-12 rounded-md flex w-full md:w-fit flex-col items-center">
       {/* section title component */}
       <div className="text-start md:text-center">
         <SectionTitle
