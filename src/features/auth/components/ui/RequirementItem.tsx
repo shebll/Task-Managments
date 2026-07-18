@@ -9,14 +9,14 @@ One special character
  */
 function RequirementItem({ completed, text }: Props) {
   return (
-    <div className="flex items-center gap-[8px]">
+    <div className="flex items-center gap-2">
       {completed ? (
-        <CheckCircle2 size={11} className="text-[#004E32]" />
+        <CheckCircle2 size={11} className="text-text-success" />
       ) : (
-        <Circle size={11} className="text-[#737685]" />
+        <Circle size={11} className="text-text-placeholder" />
       )}
 
-      <span className="text-xs text-[#434654] ">{text}</span>
+      <span className="text-xs text-text-secondary">{text}</span>
     </div>
   );
 }

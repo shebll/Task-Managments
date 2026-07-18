@@ -10,8 +10,8 @@ type Props = {
 function Button({ loading, children, variant, className, ...props }: Props) {
   const variants = {
     primary: "btn-prime",
-    secondary: "text-primary text-[14px] py-3 px-4",
-    ghost: "text-[#4F5F7B] text-[14px] py-3 px-4 ",
+    secondary: "text-button-secondary-text text-sm py-3 px-4",
+    ghost: "text-button-ghost-text text-sm py-3 px-4",
   };
 
   return (

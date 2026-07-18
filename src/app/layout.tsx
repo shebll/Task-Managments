@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/style/globals.css";
-import QueryProvider from "@/providers/ QueryProvider";
+import QueryProvider from "@/providers/query-provider";
 
 const geistInter = Inter({
   variable: "--font-geist-inter",
@@ -40,7 +40,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geistInter.variable} h-full antialiased`}>
-      <body className="min-h-full bg-background text-foreground ">
+      <body className="min-h-screen  bg-background text-foreground ">
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>

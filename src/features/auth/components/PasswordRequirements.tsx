@@ -5,7 +5,7 @@ type Props = { password: string };
 
 function PasswordRequirements({ password }: Props) {
   return (
-    <div className="w-full rounded-md bg-blue-100 p-[16px] flex flex-col gap-[8px]">
+    <div className="w-full rounded-md bg-bg-input p-4 flex flex-col gap-2">
       <RequirementItem
         text="At least 8 characters"
         completed={(password && password.length >= 8) || false}

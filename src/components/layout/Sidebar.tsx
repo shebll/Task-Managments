@@ -2,23 +2,39 @@
 
 import { dashboardLinks } from "@/lib/navigation";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Button from "../ui/Button";
 import { ArrowLeft, ArrowRight, LogOut } from "lucide-react";
 import Logo from "../shared/Logo";
 import { useDashboard } from "@/features/dashboard/dashboard-context";
 import Image from "next/image";
 import { useLogout } from "@/features/auth/hooks/useLogout";
+import { useAuth } from "@/features/auth/hooks/use-auth";
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
 
   const { sidebarCollapsed, toggleSidebar } = useDashboard();
-  const { mutate: logoutUser, isPending } = useLogout();
+  const { logout } = useAuth();
+  const logoutMutation = useLogout();
+
+  const handleLogout = () => {
+    logoutMutation.mutate(undefined, {
+      onSuccess: (response) => {
+        logout();
+        router.replace("/login");
+      },
+      onError: (error) => {
+        logout();
+        router.replace("/login");
+      },
+    });
+  };
 
   return (
     <aside
-      className={`transition-all duration-300 p-4 bg-blue-100 flex flex-col justify-start h-screen
+      className={`transition-all duration-300 p-4 bg-bg-sidebar flex flex-col justify-start h-screen
       ${sidebarCollapsed ? "w-20" : "w-64"}`}
     >
       <div className="pb-8 flex justify-start px-2">
@@ -36,7 +52,7 @@ export default function Sidebar() {
               href={item.href}
               className={` transition-all duration-300 text-sm
               flex items-center gap-3 rounded-sm px-3 py-2.5 
-              ${active && "text-primary bg-white"}
+              ${active && "text-sidebar-active-text bg-bg-active"}
               `}
             >
               <Image
@@ -53,24 +69,24 @@ export default function Sidebar() {
       </nav>
       <Button
         onClick={toggleSidebar}
-        className="flex items-center justify-start gap-[12px] "
+        className="flex items-center justify-start gap-3"
         variant="secondary"
       >
         {sidebarCollapsed ? (
-          <ArrowRight size={20} className="text-[#041b3c]" />
+          <ArrowRight size={20} className="text-sidebar-icon" />
         ) : (
-          <ArrowLeft size={20} className="text-[#041b3c]" />
+          <ArrowLeft size={20} className="text-sidebar-icon" />
         )}
-        {!sidebarCollapsed && <p className="text-[#041b3c]">Collapse</p>}
+        {!sidebarCollapsed && <p className="text-sidebar-icon">Collapse</p>}
       </Button>
       <Button
-        className="flex items-center justify-start gap-[12px]"
-        onClick={() => logoutUser()}
-        disabled={isPending}
+        className="flex items-center justify-start gap-3"
+        onClick={handleLogout}
+        disabled={logoutMutation.isPending}
         variant="secondary"
       >
-        <LogOut size={18} className="text-[#BA1A1A]" />
-        {!sidebarCollapsed && <p className="text-[#BA1A1A]">LogOut </p>}
+        <LogOut size={18} className="text-sidebar-danger" />
+        {!sidebarCollapsed && <p className="text-sidebar-danger">LogOut </p>}
       </Button>
     </aside>
   );

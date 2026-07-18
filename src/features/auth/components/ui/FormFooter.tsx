@@ -10,9 +10,9 @@ function FormFooter({
   linkHref: string;
 }) {
   return (
-    <p className="text-sm text-muted-foreground pt-8">
+    <p className="text-sm text-text-muted pt-8">
       {text}
-      <Link href={linkHref} className="text-primary font-semibold">
+      <Link href={linkHref} className="text-text-link font-semibold">
         {linkText}
       </Link>
     </p>
