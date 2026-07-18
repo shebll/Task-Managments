@@ -13,8 +13,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useSignup } from "../hooks/use-signup";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../hooks/use-auth";
+import { useMediaQuery } from "usehooks-ts";
 
 function SignUpFormComponent() {
+  const isDesktop = useMediaQuery("(min-width: 768px)");
+
   const router = useRouter();
   const { login } = useAuth();
   const signupMutation = useSignup();
@@ -53,18 +56,18 @@ function SignUpFormComponent() {
   return (
     <form
       onSubmit={formdata.handleSubmit(onSubmitHandler)}
-      className="flex flex-col items-center gap-6 max-w-120"
+      className="flex flex-col items-center gap-6 max-w-120 w-full"
     >
       {/* Form Fields */}
       <FormField
         formdata={formdata}
         name="name"
         type="string"
-        label="name"
+        label={isDesktop ? "name" : "full name"}
         minLength={3}
         maxLength={50}
         placeholder="Enter your full name"
-        hint=" 3-50 characters, letters only."
+        hint={isDesktop ? "3-50 characters, letters only." : undefined}
       />
       <FormField
         formdata={formdata}
@@ -75,18 +78,18 @@ function SignUpFormComponent() {
       />
       <FormField
         formdata={formdata}
-        label="Job Title (Optional)"
+        label={isDesktop ? "Job Title (Optional)" : "Job Title"}
         name="jobTitle"
         type="text"
         placeholder="e.g. Project Manager"
       />
-      <div className="flex gap-4">
+      <div className="flex flex-col md:flex-row gap-4 w-full">
         <FormField
           formdata={formdata}
           label="Password"
           name="password"
           type="password"
-          placeholder="Password"
+          placeholder={isDesktop ? "Password" : "#Ys12345678"}
         />
         <FormField
           formdata={formdata}
