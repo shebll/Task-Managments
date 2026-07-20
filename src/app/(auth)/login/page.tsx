@@ -1,6 +1,10 @@
 import SectionTitle from "@/components/shared/SectionTitle";
 import LoginFrom from "@/features/auth/components/LoginForm";
+import type { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "LogIn",
+};
 function Login() {
   return (
     <div className="md:bg-bg-card md:p-12 rounded-md flex flex-col items-center w-full md:w-fit">

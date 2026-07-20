@@ -3,11 +3,11 @@ import React from "react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Forget Password",
+  title: "Rest Password",
 };
 
 function page() {
-  return <div>forgot-password</div>;
+  return <div>reset-password</div>;
 }
 
 export default page;

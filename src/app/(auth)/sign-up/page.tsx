@@ -1,5 +1,10 @@
 import FormComponent from "@/features/auth/components/SignUpFormComponent";
 import SectionTitle from "@/components/shared/SectionTitle";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "SignUp",
+};
 
 function SignUp() {
   return (
