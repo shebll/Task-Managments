@@ -11,7 +11,7 @@ function Input({ error, className, ...props }: Props) {
       {...props}
       className={clsx(
         `
-        w-full rounded-sm
+        w-full rounded-md md:rounded-sm
         bg-bg-input
         py-3.5 px-4
         text-base

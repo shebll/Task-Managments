@@ -18,9 +18,9 @@ export function proxy(request: NextRequest) {
   const isAuthenticated = !!(accessToken || refreshToken);
 
   const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
-  const isProtectedRoute = protectedRoutes.some((route) =>
-    pathname.startsWith(route),
-  );
+  const isProtectedRoute =
+    protectedRoutes.some((route) => pathname.startsWith(route)) ||
+    pathname === "/";
 
   // Redirect authenticated users away from auth pages
   if (isAuthenticated && isAuthRoute) {

@@ -12,7 +12,7 @@ function PasswordInput({ error, ...props }: Props) {
   const [show, setShow] = useState(false);
 
   return (
-    <div className="relative">
+    <div className="relative ">
       <Input error={error} {...props} type={show ? "text" : "password"} />
 
       <button
