@@ -7,7 +7,11 @@ export type signUpType = z.infer<typeof signUpSchema>;
 
 export type loginType = z.infer<typeof loginSchema>;
 export type forgetPasswordType = z.infer<typeof forgetPasswordSchema>;
-
+export type ForgetPasswordData = {
+  email: string;
+  resendCount: number;
+  expireAt: number;
+};
 export type LoginRequest = {
   email: string;
   password: string;
