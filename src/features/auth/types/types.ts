@@ -1,10 +1,12 @@
 import { loginSchema } from "@/features/auth/schema/login-schema";
 import { signUpSchema } from "@/features/auth/schema/sign-up-schema";
 import z from "zod";
+import { forgetPasswordSchema } from "../schema/reset-password-schema";
 
 export type signUpType = z.infer<typeof signUpSchema>;
 
 export type loginType = z.infer<typeof loginSchema>;
+export type forgetPasswordType = z.infer<typeof forgetPasswordSchema>;
 
 export type LoginRequest = {
   email: string;
