@@ -27,6 +27,15 @@ export function forgetPassword(data: forgetPasswordType) {
     body: JSON.stringify(data),
   });
 }
+export function resetPassword(data: { password: string }, accessToken: string) {
+  return apiClient<{ password: string }>("/auth/v1/user", {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data),
+  });
+}
 
 export function logout() {
   return apiClient<void>("/auth/v1/logout", {
