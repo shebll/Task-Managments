@@ -48,7 +48,9 @@ export async function apiClient<T>(
       ...options?.headers,
     },
   });
-
+  if (response.status === 201) {
+    return undefined as T;
+  }
   const data = await response.json();
 
   if (response.status === 401) {
