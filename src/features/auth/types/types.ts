@@ -2,6 +2,7 @@ import { loginSchema } from "@/features/auth/schema/login-schema";
 import { signUpSchema } from "@/features/auth/schema/sign-up-schema";
 import z from "zod";
 import { forgetPasswordSchema } from "../schema/reset-password-schema";
+import { resetPasswordSchema } from "../schema/restPasswordSchema";
 
 export type signUpType = z.infer<typeof signUpSchema>;
 
@@ -34,6 +35,7 @@ export type AuthResponse = {
   token_type: string;
   user: User;
 };
+export type resetPasswordType = z.infer<typeof resetPasswordSchema>;
 
 export type LoginResponse = AuthResponse;
 export type SignUpResponse = AuthResponse;
