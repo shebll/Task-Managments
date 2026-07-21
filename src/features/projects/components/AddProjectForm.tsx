@@ -10,6 +10,7 @@ import FormField from "@/features/auth/components/FormField";
 import Image from "next/image";
 import Link from "next/link";
 import TextAreaInput from "./ui/TextAreaInput";
+import { toast } from "sonner";
 
 function AddProjectForm() {
   const addProjectMutation = useAddProject();
@@ -22,7 +23,7 @@ function AddProjectForm() {
   ) => {
     addProjectMutation.mutate(data, {
       onSuccess: (response) => {
-        console.log(response);
+        toast.success("Project created successfully!");
       },
 
       onError: (error) => {
