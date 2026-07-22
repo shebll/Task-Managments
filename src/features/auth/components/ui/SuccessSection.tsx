@@ -34,7 +34,7 @@ function SuccessSection({
         disabled={!canResend}
         type="button"
         variant="secondary"
-        onClick={() => onResend}
+        onClick={onResend}
         loading={isPending}
         className="w-full flex rounded-sm p-3 bg-blue-50 justify-center items-center gap-2 text-muted-foreground font-semibold "
       >
