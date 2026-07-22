@@ -1,5 +1,6 @@
 import { apiClient } from "@/lib/api/api-client";
 import {
+  forgetPasswordType,
   LoginRequest,
   LoginResponse,
   SignUpRequest,
@@ -16,6 +17,22 @@ export function signup(data: SignUpRequest) {
 export function login(data: LoginRequest) {
   return apiClient<LoginResponse>("/auth/v1/token?grant_type=password", {
     method: "POST",
+    body: JSON.stringify(data),
+  });
+}
+
+export function forgetPassword(data: forgetPasswordType) {
+  return apiClient<forgetPasswordType>("/auth/v1/recover", {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+}
+export function resetPassword(data: { password: string }, accessToken: string) {
+  return apiClient<{ password: string }>("/auth/v1/user", {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
     body: JSON.stringify(data),
   });
 }

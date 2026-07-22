@@ -19,7 +19,7 @@ function Button({ loading, children, variant, className, ...props }: Props) {
       disabled={loading}
       {...props}
       className={clsx(
-        "flex items-center justify-center gap-2",
+        "flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed",
         loading ? "cursor-not-allowed opacity-70" : "cursor-pointer",
 
         className,
