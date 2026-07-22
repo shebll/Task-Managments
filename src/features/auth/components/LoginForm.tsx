@@ -39,7 +39,7 @@ function LoginFrom() {
             response.refresh_token,
             data.rememberMe,
           );
-          router.replace("/projects");
+          router.replace("/project");
         },
 
         onError: (error) => {
