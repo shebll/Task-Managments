@@ -23,6 +23,7 @@ function AddProjectForm() {
   ) => {
     addProjectMutation.mutate(data, {
       onSuccess: (response) => {
+        formData.reset();
         toast.success("Project created successfully!");
       },
 
