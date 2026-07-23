@@ -3,27 +3,27 @@
 export const dashboardLinks = [
   {
     title: "Projects",
-    href: "/projects",
+    projectRoute: "/project",
     desktopIcon: "/assets/icons/project-icon.svg",
   },
   {
     title: "Project Epics",
-    href: "/project-epics",
+    projectRoute: "/epics",
     desktopIcon: "/assets/icons/project-epics-icon.svg",
   },
   {
     title: "Project Tasks",
-    href: "/project-tasks",
+    projectRoute: "/tasks",
     desktopIcon: "/assets/icons/project-tasks-icon.svg",
   },
   {
     title: "Project Members",
-    href: "/project-members",
+    projectRoute: "/members",
     desktopIcon: "/assets/icons/project-members-icon.svg",
   },
   {
     title: "Project Details",
-    href: "/project-details",
+    projectRoute: "/edit",
     desktopIcon: "/assets/icons/project-details-icon.svg",
   },
 ];

@@ -1,8 +1,8 @@
 "use client";
 
-import { dashboardLinks } from "@/lib/navigation";
+import { dashboardLinks } from "@/const/navigation";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import Button from "../ui/Button";
 import { ArrowLeft, ArrowRight, LogOut } from "lucide-react";
 import Logo from "../shared/Logo";
@@ -13,7 +13,10 @@ import { useAuth } from "@/features/auth/hooks/use-auth";
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const params = useParams();
   const router = useRouter();
+
+  const projectId = params.projectId as string | undefined;
 
   const { sidebarCollapsed, toggleSidebar } = useDashboard();
   const { logout } = useAuth();
@@ -32,6 +35,15 @@ export default function Sidebar() {
     });
   };
 
+  const links = dashboardLinks.map((item) => ({
+    ...item,
+    href:
+      item.projectRoute !== "/project"
+        ? projectId
+          ? `/project/${projectId}${item.projectRoute}`
+          : "/project"
+        : item.projectRoute,
+  }));
   return (
     <aside
       className={`transition-all duration-300 p-4 bg-bg-sidebar flex flex-col justify-start h-screen
@@ -41,14 +53,16 @@ export default function Sidebar() {
         <Logo icon={sidebarCollapsed} />
       </div>
       <nav className="h-full flex flex-col justify-start gap-1">
-        {dashboardLinks.map((item) => {
-          const active = pathname === item.href;
-
+        {links.map((item) => {
+          const active =
+            item.projectRoute === "/project"
+              ? pathname === "/project"
+              : pathname.endsWith(item.projectRoute);
           const icon = item.desktopIcon;
 
           return (
             <Link
-              key={item.href}
+              key={item.projectRoute}
               href={item.href}
               className={` transition-all duration-300 text-sm
               flex items-center gap-3 rounded-sm px-3 py-2.5 
