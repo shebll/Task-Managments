@@ -7,3 +7,13 @@ export const addProject = (addProjectData: AddProjectType) => {
     body: JSON.stringify(addProjectData),
   });
 };
+
+export const updateProject = (
+  addProjectData: AddProjectType,
+  projectId: string,
+) => {
+  return apiClient<void>(`/rest/v1/projects?id=eq.${projectId}`, {
+    method: "PATCH",
+    body: JSON.stringify(addProjectData),
+  });
+};

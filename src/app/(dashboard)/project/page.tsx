@@ -4,7 +4,7 @@ import { ProjectSkeleton } from "@/features/projects/components/ProjectSkeleton"
 import { PlusCircle } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
-
+export const dynamic = "force-dynamic";
 async function Projects() {
   return (
     <div className="h-full flex flex-col gap-10">
