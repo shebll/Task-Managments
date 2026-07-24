@@ -32,12 +32,9 @@ export default function Home() {
       return;
     }
 
-    // Store tokens in sessionStorage (cleared when tab closes)
-    // More secure than URL query params which persist in browser history
-    sessionStorage.setItem("recovery_access_token", accessToken);
-    sessionStorage.setItem("recovery_refresh_token", refreshToken);
-
-    router.replace("/reset-password");
+    router.replace(
+      `/reset-password?access_token=${encodeURIComponent(accessToken)}&refresh_token=${encodeURIComponent(refreshToken)}`,
+    );
   }, [router]);
 
   return <div className="heading1">Home page</div>;
