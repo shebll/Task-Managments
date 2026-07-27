@@ -1,7 +1,7 @@
 "use client";
 
 import { SubmitHandler, useForm } from "react-hook-form";
-import { AddProjectType } from "../types/types";
+import { AddProjectType, ProjectsData } from "../types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addProjectSchema } from "../schema/add-project-schema";
 import { useAddProject } from "../hooks/useAddProject";
@@ -11,27 +11,65 @@ import Image from "next/image";
 import Link from "next/link";
 import TextAreaInput from "./ui/TextAreaInput";
 import { toast } from "sonner";
+import { useMutation } from "@tanstack/react-query";
+import { updateProject } from "../api/projects-client-api";
 
-function AddProjectForm() {
+function ProjectForm({ projectData }: { projectData?: ProjectsData }) {
+  const updateProjectMutation = useMutation({
+    mutationFn: ({
+      projectData,
+      projectId,
+    }: {
+      projectData: AddProjectType;
+      projectId: string;
+    }) => updateProject(projectData, projectId),
+  });
   const addProjectMutation = useAddProject();
+
   const formData = useForm<AddProjectType>({
+    defaultValues: projectData
+      ? {
+          name: projectData[0].name,
+          description: projectData[0].description,
+        }
+      : undefined,
     mode: "onChange",
     resolver: zodResolver(addProjectSchema),
   });
+
   const handleSubmit: SubmitHandler<AddProjectType> = (
     data: AddProjectType,
   ) => {
-    addProjectMutation.mutate(data, {
-      onSuccess: (response) => {
-        formData.reset();
-        toast.success("Project created successfully!");
-      },
+    if (projectData) {
+      updateProjectMutation.mutate(
+        {
+          projectData: data,
+          projectId: projectData[0].id,
+        },
+        {
+          onSuccess: (response) => {
+            toast.success("Project updated successfully!");
+          },
 
-      onError: (error) => {
-        console.log(error);
-        formData.setError("root", { message: error.message });
-      },
-    });
+          onError: (error) => {
+            console.log(error);
+            formData.setError("root", { message: error.message });
+          },
+        },
+      );
+    } else {
+      addProjectMutation.mutate(data, {
+        onSuccess: (response) => {
+          formData.reset();
+          toast.success("Project created successfully!");
+        },
+
+        onError: (error) => {
+          console.log(error);
+          formData.setError("root", { message: error.message });
+        },
+      });
+    }
   };
 
   return (
@@ -78,7 +116,14 @@ function AddProjectForm() {
             <Link href={"/project"}>
               <Button variant="secondary">Back</Button>
             </Link>
-            <Button loading={addProjectMutation.isPending} variant="primary">
+            <Button
+              loading={
+                projectData
+                  ? updateProjectMutation.isPending
+                  : addProjectMutation.isPending
+              }
+              variant="primary"
+            >
               Create Account
             </Button>
           </div>
@@ -101,4 +146,4 @@ function AddProjectForm() {
   );
 }
 
-export default AddProjectForm;
+export default ProjectForm;

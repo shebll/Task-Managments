@@ -1,10 +1,6 @@
 "use client";
-import FormFooter from "@/features/auth/components/ui/FormFooter";
-import { resetPasswordType } from "@/features/auth/types/types";
-import FormField from "./FormField";
 
-import PasswordRequirements from "./PasswordRequirements";
-import Button from "@/components/ui/Button";
+import FormField from "./FormField";
 
 import { SubmitHandler, useForm, useWatch } from "react-hook-form";
 
@@ -14,16 +10,31 @@ import { useResetPassword } from "../hooks/use-reset-password";
 import { resetPasswordSchema } from "../schema/restPasswordSchema";
 import { useState } from "react";
 import NewPasswordRequirements from "./NewPasswordRequirements";
+import { resetPasswordType } from "../types/types";
+import Button from "@/components/ui/Button";
+import FormFooter from "./ui/FormFooter";
 
-function RestPasswordFrom({
-  access_token,
-}: {
-  access_token?: string;
-  refresh_token?: string;
-}) {
+function RestPasswordFrom() {
   const router = useRouter();
   const [isSuccess, setIsSuccess] = useState(false);
   const resetPasswordMutation = useResetPassword();
+
+  // Read tokens from sessionStorage synchronously during initialization.
+  // sessionStorage is synchronous and browser-only, so this avoids
+  // useEffect + cascading setState calls (avoids React anti-pattern).
+  const [accessToken] = useState<string | null>(() => {
+    if (typeof window === "undefined") return null;
+    const token = sessionStorage.getItem("recovery_access_token");
+    if (token) {
+      // Clean up sessionStorage immediately after reading
+      sessionStorage.removeItem("recovery_access_token");
+      sessionStorage.removeItem("recovery_refresh_token");
+    }
+    return token;
+  });
+
+  // Derived state — no additional useState needed
+  const hasTokenError = !accessToken;
 
   const formdata = useForm<resetPasswordType>({
     resolver: zodResolver(resetPasswordSchema),
@@ -37,9 +48,10 @@ function RestPasswordFrom({
   const onSubmitHandler: SubmitHandler<resetPasswordType> = (
     data: resetPasswordType,
   ) => {
-    console.log(data);
+    if (!accessToken) return;
+
     resetPasswordMutation.mutate(
-      { data: { password: data.password }, accessToken: access_token! },
+      { data: { password: data.password }, accessToken },
       {
         onSuccess: () => {
           setIsSuccess(true);
@@ -55,6 +67,15 @@ function RestPasswordFrom({
       },
     );
   };
+
+  if (hasTokenError) {
+    return (
+      <div className="w-full max-w-120 rounded-sm bg-bg-error p-4 text-sm text-error text-center">
+        Invalid or missing reset link. Please request a new password reset.
+      </div>
+    );
+  }
+
   return (
     <form
       onSubmit={formdata.handleSubmit(onSubmitHandler)}
