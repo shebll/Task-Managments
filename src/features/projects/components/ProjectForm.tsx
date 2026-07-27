@@ -4,28 +4,14 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { AddProjectType, ProjectsData } from "../types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addProjectSchema } from "../schema/add-project-schema";
-import { useAddProject } from "../hooks/useAddProject";
 import Button from "@/components/ui/Button";
 import FormField from "@/features/auth/components/FormField";
 import Image from "next/image";
 import Link from "next/link";
 import TextAreaInput from "./ui/TextAreaInput";
-import { toast } from "sonner";
-import { useMutation } from "@tanstack/react-query";
-import { updateProject } from "../api/projects-client-api";
+import { addProject, updateProject } from "../api/projects-client-api";
 
 function ProjectForm({ projectData }: { projectData?: ProjectsData }) {
-  const updateProjectMutation = useMutation({
-    mutationFn: ({
-      projectData,
-      projectId,
-    }: {
-      projectData: AddProjectType;
-      projectId: string;
-    }) => updateProject(projectData, projectId),
-  });
-  const addProjectMutation = useAddProject();
-
   const formData = useForm<AddProjectType>({
     defaultValues: projectData
       ? {
@@ -37,38 +23,19 @@ function ProjectForm({ projectData }: { projectData?: ProjectsData }) {
     resolver: zodResolver(addProjectSchema),
   });
 
-  const handleSubmit: SubmitHandler<AddProjectType> = (
+  const handleSubmit: SubmitHandler<AddProjectType> = async (
     data: AddProjectType,
   ) => {
-    if (projectData) {
-      updateProjectMutation.mutate(
-        {
-          projectData: data,
-          projectId: projectData[0].id,
-        },
-        {
-          onSuccess: (response) => {
-            toast.success("Project updated successfully!");
-          },
-
-          onError: (error) => {
-            console.log(error);
-            formData.setError("root", { message: error.message });
-          },
-        },
-      );
-    } else {
-      addProjectMutation.mutate(data, {
-        onSuccess: (response) => {
-          formData.reset();
-          toast.success("Project created successfully!");
-        },
-
-        onError: (error) => {
-          console.log(error);
-          formData.setError("root", { message: error.message });
-        },
-      });
+    try {
+      if (projectData) await updateProject(data, projectData[0].id);
+      if (!projectData) await addProject(data);
+    } catch (error) {
+      console.log(error instanceof Error);
+      if (error instanceof Error) {
+        formData.setError("root", { message: error.message });
+      } else {
+        formData.setError("root", { message: "Something Went Wrong !" });
+      }
     }
   };
 
@@ -85,7 +52,9 @@ function ProjectForm({ projectData }: { projectData?: ProjectsData }) {
             />
           </div>
           <div className="">
-            <h2 className="font-semibold text-xl">Initialize New Project</h2>
+            <h2 className="font-semibold text-xl">
+              {projectData ? "Edit Project" : "Initialize New Project"}
+            </h2>
             <p className="text-text-placeholder text-sm">
               Define the scope and foundational details of your project.
             </p>
@@ -116,15 +85,8 @@ function ProjectForm({ projectData }: { projectData?: ProjectsData }) {
             <Link href={"/project"}>
               <Button variant="secondary">Back</Button>
             </Link>
-            <Button
-              loading={
-                projectData
-                  ? updateProjectMutation.isPending
-                  : addProjectMutation.isPending
-              }
-              variant="primary"
-            >
-              Create Account
+            <Button loading={formData.formState.isSubmitting} variant="primary">
+              {projectData ? "Save Changes" : "Create Account"}
             </Button>
           </div>
         </form>
