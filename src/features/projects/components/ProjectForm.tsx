@@ -97,7 +97,7 @@ function ProjectForm({ projectData }: { projectData?: ProjectsData }) {
         >
           {/* Form Fields for title */}
           <FormField
-            formdata={formData}
+            formData={formData}
             name="name"
             type="string"
             label={"Project TITLE *"}

@@ -4,8 +4,7 @@ import { CheckCircle2, Timer } from "lucide-react";
 type Props = {
   canResend: boolean;
   isPending: boolean;
-  minutes: string;
-  seconds: string;
+  timeLeft: number;
   resendCount: number;
   onResend: () => void;
 };
@@ -13,11 +12,13 @@ type Props = {
 function SuccessSection({
   canResend,
   isPending,
-  minutes,
-  seconds,
+  timeLeft,
   resendCount,
   onResend,
 }: Props) {
+  // formate time left
+  const minutes = String(Math.floor(timeLeft / 60)).padStart(2, "0");
+  const seconds = String(timeLeft % 60).padStart(2, "0");
   return (
     <div className="flex gap-6 flex-col justify-center items-center">
       <div className="p-4 rounded-md bg-status-success-bg/33 text-text-success flex gap-3">

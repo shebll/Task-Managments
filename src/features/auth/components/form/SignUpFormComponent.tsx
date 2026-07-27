@@ -23,12 +23,12 @@ function SignUpFormComponent() {
   const router = useRouter();
   const { login } = useAuth();
 
-  const formdata = useForm<signUpType>({
+  const formData = useForm<signUpType>({
     resolver: zodResolver(signUpSchema),
     mode: "onChange",
   });
   const password = useWatch({
-    control: formdata.control,
+    control: formData.control,
     name: "password",
   });
 
@@ -50,20 +50,20 @@ function SignUpFormComponent() {
     } catch (error) {
       console.log(error instanceof Error);
       if (error instanceof Error) {
-        formdata.setError("root", { message: error.message });
+        formData.setError("root", { message: error.message });
       } else {
-        formdata.setError("root", { message: "Something Went Wrong !" });
+        formData.setError("root", { message: "Something Went Wrong !" });
       }
     }
   };
   return (
     <form
-      onSubmit={formdata.handleSubmit(onSubmitHandler)}
+      onSubmit={formData.handleSubmit(onSubmitHandler)}
       className="flex flex-col items-center gap-6 max-w-120 w-full"
     >
       {/* Form Fields */}
       <FormField
-        formdata={formdata}
+        formData={formData}
         name="name"
         type="string"
         label={isDesktop ? "name" : "full name"}
@@ -73,14 +73,14 @@ function SignUpFormComponent() {
         hint={isDesktop ? "3-50 characters, letters only." : undefined}
       />
       <FormField
-        formdata={formdata}
+        formData={formData}
         label="Email"
         name="email"
         type="email"
         placeholder="yourname@company.com"
       />
       <FormField
-        formdata={formdata}
+        formData={formData}
         label={isDesktop ? "Job Title (Optional)" : "Job Title"}
         name="jobTitle"
         type="text"
@@ -88,14 +88,14 @@ function SignUpFormComponent() {
       />
       <div className="flex flex-col md:flex-row gap-4 w-full">
         <FormField
-          formdata={formdata}
+          formData={formData}
           label="Password"
           name="password"
           type="password"
           placeholder={isDesktop ? "Password" : "#Ys12345678"}
         />
         <FormField
-          formdata={formdata}
+          formData={formData}
           label="Confirm Password"
           name="confirmPassword"
           type="password"
@@ -107,13 +107,13 @@ function SignUpFormComponent() {
       <PasswordRequirements password={password} />
 
       {/* Submit Button */}
-      {formdata.formState.errors.root && (
+      {formData.formState.errors.root && (
         <p className="w-full rounded-sm bg-bg-error pb-3.5 pt-3.5 pr-4 pl-4 text-sm text-error">
-          {formdata.formState.errors.root.message}
+          {formData.formState.errors.root.message}
         </p>
       )}
       <Button
-        loading={formdata.formState.isSubmitting}
+        loading={formData.formState.isSubmitting}
         variant="primary"
         className="w-full"
       >

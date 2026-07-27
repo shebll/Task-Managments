@@ -22,7 +22,7 @@ function LoginFrom() {
   const router = useRouter();
   const { login: loginLocal } = useAuth();
 
-  const formdata = useForm<loginType>({
+  const formData = useForm<loginType>({
     resolver: zodResolver(loginSchema),
     mode: "onChange",
   });
@@ -40,19 +40,19 @@ function LoginFrom() {
     } catch (error) {
       console.log(error instanceof Error);
       if (error instanceof Error) {
-        formdata.setError("root", { message: error.message });
+        formData.setError("root", { message: error.message });
       } else {
-        formdata.setError("root", { message: "Something Went Wrong !" });
+        formData.setError("root", { message: "Something Went Wrong !" });
       }
     }
   };
   return (
     <form
-      onSubmit={formdata.handleSubmit(onSubmitHandler)}
+      onSubmit={formData.handleSubmit(onSubmitHandler)}
       className="flex flex-col items-center gap-6 w-full md:w-120  "
     >
       <FormField
-        formdata={formdata}
+        formData={formData}
         label={isDesktop ? "Email" : "Email Address"}
         name="email"
         type="email"
@@ -61,7 +61,7 @@ function LoginFrom() {
         }
       />
       <FormField
-        formdata={formdata}
+        formData={formData}
         label="Password"
         name="password"
         type="password"
@@ -72,7 +72,7 @@ function LoginFrom() {
           <input
             type="checkbox"
 
-            {...formdata.register("rememberMe")}
+            {...formData.register("rememberMe")}
             className="size-4 rounded border border-border-checkbox accent-accent-checkbox cursor-pointer"
           />
 
@@ -87,7 +87,7 @@ function LoginFrom() {
       </div>
 
       <Button
-        loading={formdata.formState.isSubmitting}
+        loading={formData.formState.isSubmitting}
         variant="primary"
         className="w-full"
       >
@@ -95,9 +95,9 @@ function LoginFrom() {
         <ArrowRight size={24} />
       </Button>
 
-      {formdata.formState.errors.root && (
+      {formData.formState.errors.root && (
         <p className="w-full rounded-sm bg-bg-error pb-3.5 pt-3.5 pr-4 pl-4 text-sm text-error">
-          {formdata.formState.errors.root.message}
+          {formData.formState.errors.root.message}
         </p>
       )}
 

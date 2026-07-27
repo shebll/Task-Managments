@@ -36,12 +36,12 @@ function RestPasswordFrom() {
   // Derived state — no additional useState needed
   const hasTokenError = !accessToken;
 
-  const formdata = useForm<resetPasswordType>({
+  const formData = useForm<resetPasswordType>({
     resolver: zodResolver(resetPasswordSchema),
     mode: "onChange",
   });
   const password = useWatch({
-    control: formdata.control,
+    control: formData.control,
     name: "password",
   });
 
@@ -62,7 +62,7 @@ function RestPasswordFrom() {
         },
 
         onError: (error) => {
-          formdata.setError("root", { message: error.message });
+          formData.setError("root", { message: error.message });
         },
       },
     );
@@ -78,20 +78,20 @@ function RestPasswordFrom() {
 
   return (
     <form
-      onSubmit={formdata.handleSubmit(onSubmitHandler)}
+      onSubmit={formData.handleSubmit(onSubmitHandler)}
       className="flex flex-col items-center gap-6 max-w-120 w-full"
     >
       {/* Form Fields */}
 
       <FormField
-        formdata={formdata}
+        formData={formData}
         label="Password"
         name="password"
         type="password"
         placeholder={"Password"}
       />
       <FormField
-        formdata={formdata}
+        formData={formData}
         label="Confirm Password"
         name="confirmPassword"
         type="password"
@@ -102,9 +102,9 @@ function RestPasswordFrom() {
       <NewPasswordRequirements password={password} />
 
       {/* Submit Button */}
-      {formdata.formState.errors.root && (
+      {formData.formState.errors.root && (
         <p className="w-full rounded-sm bg-bg-error pb-3.5 pt-3.5 pr-4 pl-4 text-sm text-error">
-          {formdata.formState.errors.root.message}
+          {formData.formState.errors.root.message}
         </p>
       )}
       <Button
