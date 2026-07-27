@@ -48,10 +48,12 @@ function SignUpFormComponent() {
       login(response.user, response.access_token, response.refresh_token);
       router.replace("/project");      
     } catch (error) {
+      console.log(error instanceof Error)
       if (error instanceof Error) {
         formdata.setError("root", {message: error.message});
-      }   
-    formdata.setError("root", {message: "Something Went Wrong!"});
+      }else{
+        formdata.setError("root", {message: "Something Went Wrong !"});
+      }
     }  
   };
   return (
@@ -111,7 +113,7 @@ function SignUpFormComponent() {
         </p>
       )}
       <Button
-        // loading={}
+          loading={formdata.formState.isSubmitting}
         variant="primary"
         className="w-full"
       >
