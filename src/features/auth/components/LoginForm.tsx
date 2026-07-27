@@ -8,53 +8,49 @@ import Button from "@/components/ui/Button";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "../schema/login-schema";
-import { useLogin } from "../hooks/use-login";
 import { useAuth } from "../hooks/use-auth";
 import { useRouter } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 
 import { useMediaQuery } from "usehooks-ts";
+import { login } from "../api/auth-api";
 
 function LoginFrom() {
   const isDesktop = useMediaQuery("(min-width: 768px)", {
     initializeWithValue: false,
   });
   const router = useRouter();
-  const { login } = useAuth();
-  const loginMutation = useLogin();
+  const { login: loginLocal } = useAuth();
 
   const formdata = useForm<loginType>({
     resolver: zodResolver(loginSchema),
     mode: "onChange",
   });
 
-  const onSubmitHandler: SubmitHandler<loginType> = (data: loginType) => {
-    loginMutation.mutate(
-      { email: data.email, password: data.password },
-      {
-        onSuccess: (response) => {
-          login(
-            response.user,
-            response.access_token,
-            response.refresh_token,
-            data.rememberMe,
-          );
-          router.replace("/project");
-        },
-
-        onError: (error) => {
-          formdata.setError("root", { message: error.message });
-        },
-      },
-    );
+  const onSubmitHandler: SubmitHandler<loginType> = async (data: loginType) => {
+    try {
+      const response = await login(data);
+      loginLocal(
+        response.user,
+        response.access_token,
+        response.refresh_token,
+        data.rememberMe,
+      );
+      router.replace("/project");
+    } catch (error) {
+      console.log(error instanceof Error);
+      if (error instanceof Error) {
+        formdata.setError("root", { message: error.message });
+      } else {
+        formdata.setError("root", { message: "Something Went Wrong !" });
+      }
+    }
   };
   return (
     <form
       onSubmit={formdata.handleSubmit(onSubmitHandler)}
       className="flex flex-col items-center gap-6 w-full md:w-120  "
     >
-      {/* Form Fields */}
-
       <FormField
         formdata={formdata}
         label={isDesktop ? "Email" : "Email Address"}
@@ -90,9 +86,8 @@ function LoginFrom() {
         </a>
       </div>
 
-      {/* Submit Button */}
       <Button
-        loading={loginMutation.isPending}
+        loading={formdata.formState.isSubmitting}
         variant="primary"
         className="w-full"
       >
@@ -107,7 +102,6 @@ function LoginFrom() {
       )}
 
       <div className="w-full border-t mt-6 border-border-divider flex justify-center">
-        {/* Form Footer */}
         <FormFooter
           text="Don't have an account? "
           linkText="Sign Up"
