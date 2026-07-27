@@ -1,9 +1,8 @@
-import React from "react";
 import RequirementItem from "./ui/RequirementItem";
 
 type Props = { password: string };
 
-function NewPasswordRequirements({ password }: Props) {
+function ResetPasswordRequirements({ password }: Props) {
   return (
     <div className="w-full rounded-md bg-bg-input p-6 md:flex flex-col gap-4 ">
       <p className=" font-bold text-xs uppercase text-text-secondary  pb-2 border-b border-b-border-divider">
@@ -39,4 +38,4 @@ function NewPasswordRequirements({ password }: Props) {
   );
 }
 
-export default NewPasswordRequirements;
+export default ResetPasswordRequirements;

@@ -8,7 +8,7 @@ import FormField from "../FormField";
 import Button from "@/components/ui/Button";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import SuccessSection from "../ui/SuccessSection";
+import SuccessSection from "../SuccessSection";
 import { forgetPassword } from "../../api/auth-api";
 
 function ForgetPasswordForm() {

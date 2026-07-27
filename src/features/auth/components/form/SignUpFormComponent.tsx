@@ -4,7 +4,7 @@ import FormFooter from "@/features/auth/components/ui/FormFooter";
 import { signUpType } from "@/features/auth/types/types";
 import FormField from "../FormField";
 
-import PasswordRequirements from "../PasswordRequirements";
+import PasswordRequirements from "../LoginPasswordRequirements";
 import Button from "@/components/ui/Button";
 
 import { zodResolver } from "@hookform/resolvers/zod";

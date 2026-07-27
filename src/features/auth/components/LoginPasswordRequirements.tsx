@@ -1,9 +1,8 @@
-import React from "react";
 import RequirementItem from "./ui/RequirementItem";
 
 type Props = { password: string };
 
-function PasswordRequirements({ password }: Props) {
+function LoginPasswordRequirements({ password }: Props) {
   return (
     <div className="hidden w-full rounded-md bg-bg-input p-4 md:flex flex-col gap-2">
       <RequirementItem
@@ -24,4 +23,4 @@ function PasswordRequirements({ password }: Props) {
   );
 }
 
-export default PasswordRequirements;
+export default LoginPasswordRequirements;
