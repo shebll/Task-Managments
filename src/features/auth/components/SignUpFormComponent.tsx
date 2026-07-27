@@ -7,13 +7,13 @@ import FormField from "./FormField";
 import PasswordRequirements from "./PasswordRequirements";
 import Button from "@/components/ui/Button";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm, useWatch } from "react-hook-form";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useSignup } from "../hooks/use-signup";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../hooks/use-auth";
 import { useMediaQuery } from "usehooks-ts";
+import { signup } from "../api/auth-api";
 
 function SignUpFormComponent() {
   const isDesktop = useMediaQuery("(min-width: 768px)", {
@@ -22,7 +22,6 @@ function SignUpFormComponent() {
 
   const router = useRouter();
   const { login } = useAuth();
-  const signupMutation = useSignup();
 
   const formdata = useForm<signUpType>({
     resolver: zodResolver(signUpSchema),
@@ -33,7 +32,7 @@ function SignUpFormComponent() {
     name: "password",
   });
 
-  const onSubmitHandler: SubmitHandler<signUpType> = (
+  const onSubmitHandler: SubmitHandler<signUpType> = async (
     payloadData: signUpType,
   ) => {
     const data = {
@@ -44,16 +43,16 @@ function SignUpFormComponent() {
         department: payloadData.jobTitle || "",
       },
     };
-    signupMutation.mutate(data, {
-      onSuccess: (response) => {
-        login(response.user, response.access_token, response.refresh_token);
-        router.replace("/projects");
-      },
-
-      onError: (error) => {
-        formdata.setError("root", { message: error.message });
-      },
-    });
+    try {
+      const response = await signup(data)
+      login(response.user, response.access_token, response.refresh_token);
+      router.replace("/project");      
+    } catch (error) {
+      if (error instanceof Error) {
+        formdata.setError("root", {message: error.message});
+      }   
+    formdata.setError("root", {message: "Something Went Wrong!"});
+    }  
   };
   return (
     <form
@@ -112,7 +111,7 @@ function SignUpFormComponent() {
         </p>
       )}
       <Button
-        loading={signupMutation.isPending}
+        // loading={}
         variant="primary"
         className="w-full"
       >
