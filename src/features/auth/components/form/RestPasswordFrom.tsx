@@ -1,18 +1,18 @@
 "use client";
 
-import FormField from "./FormField";
+import FormField from "../FormField";
 
 import { SubmitHandler, useForm, useWatch } from "react-hook-form";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { useResetPassword } from "../hooks/use-reset-password";
-import { resetPasswordSchema } from "../schema/restPasswordSchema";
-import { useState } from "react";
-import NewPasswordRequirements from "./NewPasswordRequirements";
-import { resetPasswordType } from "../types/types";
 import Button from "@/components/ui/Button";
-import FormFooter from "./ui/FormFooter";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useResetPassword } from "../hooks/use-reset-password";
+import { resetPasswordSchema } from "../../schema/restPasswordSchema";
+import { resetPasswordType } from "../../types/types";
+import NewPasswordRequirements from "../NewPasswordRequirements";
+import FormFooter from "../ui/FormFooter";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 function RestPasswordFrom() {
   const router = useRouter();

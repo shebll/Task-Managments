@@ -1,16 +1,16 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { forgetPasswordType } from "../types/types";
-import { forgetPasswordSchema } from "../schema/reset-password-schema";
+import { forgetPasswordType } from "../../types/types";
+import { forgetPasswordSchema } from "../../schema/reset-password-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import FormField from "./FormField";
+import FormField from "../FormField";
 import Button from "@/components/ui/Button";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useForgetPassword } from "../hooks/use-forget-password";
-import { forgetPasswordStorage } from "../lib/forgetPasswordStorage";
-import SuccessSection from "./ui/SuccessSection";
+import { forgetPasswordStorage } from "../../lib/forgetPasswordStorage";
+import SuccessSection from "../ui/SuccessSection";
 
 function ForgetPasswordForm() {
   // helper for get data from local

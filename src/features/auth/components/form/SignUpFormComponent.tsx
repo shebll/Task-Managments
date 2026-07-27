@@ -2,18 +2,18 @@
 import { signUpSchema } from "@/features/auth/schema/sign-up-schema";
 import FormFooter from "@/features/auth/components/ui/FormFooter";
 import { signUpType } from "@/features/auth/types/types";
-import FormField from "./FormField";
+import FormField from "../FormField";
 
-import PasswordRequirements from "./PasswordRequirements";
+import PasswordRequirements from "../PasswordRequirements";
 import Button from "@/components/ui/Button";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm, useWatch } from "react-hook-form";
 
 import { useRouter } from "next/navigation";
-import { useAuth } from "../hooks/use-auth";
+import { useAuth } from "../../hooks/use-auth";
 import { useMediaQuery } from "usehooks-ts";
-import { signup } from "../api/auth-api";
+import { signup } from "../../api/auth-api";
 
 function SignUpFormComponent() {
   const isDesktop = useMediaQuery("(min-width: 768px)", {
@@ -44,17 +44,17 @@ function SignUpFormComponent() {
       },
     };
     try {
-      const response = await signup(data)
+      const response = await signup(data);
       login(response.user, response.access_token, response.refresh_token);
-      router.replace("/project");      
+      router.replace("/project");
     } catch (error) {
-      console.log(error instanceof Error)
+      console.log(error instanceof Error);
       if (error instanceof Error) {
-        formdata.setError("root", {message: error.message});
-      }else{
-        formdata.setError("root", {message: "Something Went Wrong !"});
+        formdata.setError("root", { message: error.message });
+      } else {
+        formdata.setError("root", { message: "Something Went Wrong !" });
       }
-    }  
+    }
   };
   return (
     <form
@@ -113,7 +113,7 @@ function SignUpFormComponent() {
         </p>
       )}
       <Button
-          loading={formdata.formState.isSubmitting}
+        loading={formdata.formState.isSubmitting}
         variant="primary"
         className="w-full"
       >

@@ -1,19 +1,19 @@
 "use client";
 import FormFooter from "@/features/auth/components/ui/FormFooter";
 import { loginType } from "@/features/auth/types/types";
-import FormField from "./FormField";
+import FormField from "../FormField";
 
 import Button from "@/components/ui/Button";
 
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema } from "../schema/login-schema";
-import { useAuth } from "../hooks/use-auth";
+import { loginSchema } from "../../schema/login-schema";
+import { useAuth } from "../../hooks/use-auth";
 import { useRouter } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 
 import { useMediaQuery } from "usehooks-ts";
-import { login } from "../api/auth-api";
+import { login } from "../../api/auth-api";
 
 function LoginFrom() {
   const isDesktop = useMediaQuery("(min-width: 768px)", {

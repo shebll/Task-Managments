@@ -48,7 +48,7 @@ function FormField<T extends FieldValues>({
           <p className="text-xs text-text-hint font-normal pl-1">{hint}</p>
         )}
         {error && (
-          <p className="w-full rounded-sm bg-bg-error pb-3.5 pt-3.5 pr-4 pl-4 text-sm text-error">
+          <p className="w-full rounded-sm bg-bg-error py-1.5 px-2 text-sm text-error">
             {error?.message as string}
           </p>
         )}
