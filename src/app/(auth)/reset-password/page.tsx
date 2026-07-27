@@ -11,26 +11,17 @@ async function page({
   searchParams,
 }: {
   searchParams: Promise<{
+    access_token?: string;
+    refresh_token?: string;
     invalid?: boolean;
-    error?: string;
   }>;
 }) {
-  const { invalid, error } = await searchParams;
-
+  const { access_token, refresh_token, invalid } = await searchParams;
   if (invalid) {
     return (
       <ErrorCard
         title="Reset Link Expired"
         description="This password reset link is invalid or has expired. Please request a new one."
-      />
-    );
-  }
-
-  if (error === "invalid_link") {
-    return (
-      <ErrorCard
-        title="Invalid Reset Link"
-        description="The password reset link is invalid. Please request a new one."
       />
     );
   }
@@ -50,8 +41,11 @@ async function page({
           />
         </div>
 
-        {/* form component — tokens read from sessionStorage */}
-        <RestPasswordFrom />
+        {/* form component */}
+        <RestPasswordFrom
+          access_token={access_token}
+          refresh_token={refresh_token}
+        />
       </div>
     </div>
   );

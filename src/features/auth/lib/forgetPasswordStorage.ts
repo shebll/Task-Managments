@@ -9,11 +9,15 @@ export const forgetPasswordStorage = {
   },
   getForgetPasswordData: (): ForgetPasswordData | void => {
     const data = localStorage.getItem("forgetPasswordData");
-    if (!data) {
+    if (!data) return undefined;
+    try {
+      return JSON.parse(data) as ForgetPasswordData;
+    } catch {
+      localStorage.removeItem("forgetPasswordData");
       return undefined;
     }
-    if (data) {
-      return JSON.parse(data) as ForgetPasswordData;
-    }
+  },
+  clearForgetPasswordData: () => {
+    localStorage.removeItem("forgetPasswordData");
   },
 };

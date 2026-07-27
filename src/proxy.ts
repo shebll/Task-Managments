@@ -1,49 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const protectedRoutes = [
-  "/project",
+  "/projects",
   "/project-epics",
   "/project-tasks",
   "/project-members",
   "/project-details",
-  "/project",
 ];
-
-const authRoutes = [
-  "/login",
-  "/sign-up",
-  "/forgot-password",
-  "/reset-password",
-];
-
-/**
- * Decodes and validates a JWT's expiration without requiring the secret key.
- * Returns true if the token exists, is not malformed, and is not expired.
- */
-function isTokenValid(token: string | undefined): boolean {
-  if (!token) return false;
-
-  try {
-    const payloadBase64 = token.split(".")[1];
-    if (!payloadBase64) return false;
-
-    const payload = JSON.parse(atob(payloadBase64));
-
-    // Check expiration — add a 30-second buffer to avoid edge cases
-    return payload.exp * 1000 > Date.now() + 30_000;
-  } catch {
-    return false;
-  }
-}
+const authRoutes = ["/login", "/sign-up", "/forgot-password"];
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  const accessToken = request.cookies.get("access_token")?.value;
-  const refreshToken = request.cookies.get("refresh_token")?.value;
+  const accessToken = request.cookies.get("access_token");
+  const refreshToken = request.cookies.get("refresh_token");
 
-  const isAuthenticated =
-    isTokenValid(accessToken) || isTokenValid(refreshToken);
+  const isAuthenticated = !!(accessToken || refreshToken);
 
   const isAuthRoute = authRoutes.some((route) => pathname.startsWith(route));
   const isProtectedRoute = protectedRoutes.some((route) =>

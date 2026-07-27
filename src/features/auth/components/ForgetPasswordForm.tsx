@@ -80,10 +80,10 @@ function ForgetPasswordForm() {
     forgetPasswordMutation.mutate(data, {
       onSuccess: () => {
         const nextCount = resendCount + 1;
-        const expireAt = Date.now() + 10 * 1000;
+        const expireAt = Date.now() + 5 * 60 * 1000;
 
         setResendCount(nextCount);
-        setTimeLeft(10);
+        setTimeLeft(300);
         setIsEmailSent(true);
 
         setForgetPasswordData({

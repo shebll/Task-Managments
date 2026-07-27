@@ -3,7 +3,17 @@ import { EmptyProjects } from "./EmptyProjects";
 import Link from "next/link";
 import { PlusCircle } from "lucide-react";
 import { formatDate } from "../lib/helper/formatDate";
-import { getProjects } from "../api/projects-server-api";
+import { ProjectsData } from "../types/types";
+import { serverApiClient } from "@/lib/api/server-api-client";
+
+export const getProjects = () => {
+  return serverApiClient<ProjectsData>("/rest/v1/rpc/get_projects", {
+    method: "GET",
+    next: {
+      tags: ["projects"],
+    },
+  });
+};
 
 async function ListProjects() {
   const projects = await getProjects();
