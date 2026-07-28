@@ -1,49 +1,14 @@
 "use client";
-
-import { dashboardLinks } from "@/const/navigation";
-import Link from "next/link";
-import { useParams, usePathname, useRouter } from "next/navigation";
 import Button from "../ui/Button";
-import { ArrowLeft, ArrowRight, LogOut } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import Logo from "../shared/Logo";
 import { useDashboard } from "@/features/dashboard/dashboard-context";
-import Image from "next/image";
-import { useLogout } from "@/features/auth/hooks/useLogout";
-import { useAuth } from "@/features/auth/hooks/use-auth";
+import LogOutButton from "./LogOutButton";
+import NavBarLinks from "./NavBarLinks";
 
 export default function Sidebar() {
-  const pathname = usePathname();
-  const params = useParams();
-  const router = useRouter();
-
-  const projectId = params.projectId as string | undefined;
-
   const { sidebarCollapsed, toggleSidebar } = useDashboard();
-  const { logout } = useAuth();
-  const logoutMutation = useLogout();
 
-  const handleLogout = () => {
-    logoutMutation.mutate(undefined, {
-      onSuccess: (response) => {
-        logout();
-        router.replace("/login");
-      },
-      onError: (error) => {
-        logout();
-        router.replace("/login");
-      },
-    });
-  };
-
-  const links = dashboardLinks.map((item) => ({
-    ...item,
-    href:
-      item.projectRoute !== "/project"
-        ? projectId
-          ? `/project/${projectId}${item.projectRoute}`
-          : "/project"
-        : item.projectRoute,
-  }));
   return (
     <aside
       className={`transition-all duration-300 p-4 bg-bg-sidebar flex flex-col justify-start h-screen
@@ -52,35 +17,7 @@ export default function Sidebar() {
       <div className="pb-8 flex justify-start px-2">
         <Logo icon={sidebarCollapsed} />
       </div>
-      <nav className="h-full flex flex-col justify-start gap-1">
-        {links.map((item) => {
-          const active =
-            item.projectRoute === "/project"
-              ? pathname === "/project"
-              : pathname.endsWith(item.projectRoute);
-          const icon = item.desktopIcon;
-
-          return (
-            <Link
-              key={item.projectRoute}
-              href={item.href}
-              className={` transition-all duration-300 text-sm
-              flex items-center gap-3 rounded-sm px-3 py-2.5 
-              ${active && "text-sidebar-active-text bg-bg-active"}
-              `}
-            >
-              <Image
-                className="text-green-900 w-5 h-5"
-                src={icon}
-                alt={item.title}
-                width={20}
-                height={20}
-              />
-              {!sidebarCollapsed && <span>{item.title}</span>}
-            </Link>
-          );
-        })}
-      </nav>
+      <NavBarLinks sidebarCollapsed={sidebarCollapsed} />
       <Button
         onClick={toggleSidebar}
         className="flex items-center justify-start gap-3"
@@ -93,15 +30,7 @@ export default function Sidebar() {
         )}
         {!sidebarCollapsed && <p className="text-sidebar-icon">Collapse</p>}
       </Button>
-      <Button
-        className="flex items-center justify-start gap-3"
-        onClick={handleLogout}
-        disabled={logoutMutation.isPending}
-        variant="secondary"
-      >
-        <LogOut size={18} className="text-sidebar-danger" />
-        {!sidebarCollapsed && <p className="text-sidebar-danger">LogOut </p>}
-      </Button>
+      <LogOutButton sidebarCollapsed={sidebarCollapsed} />
     </aside>
   );
 }
