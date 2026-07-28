@@ -1,34 +1,37 @@
 import clsx from "clsx";
-import React from "react";
-import { UseFormReturn, useWatch } from "react-hook-form";
+import { TextareaHTMLAttributes } from "react";
+import { FieldValues, Path, UseFormReturn, useWatch } from "react-hook-form";
 
-function TextAreaInput({
+type Props<T extends FieldValues> = {
+  formData: UseFormReturn<T>;
+  name: Path<T>;
+  label: string;
+} & TextareaHTMLAttributes<HTMLTextAreaElement>;
+
+function TextAreaInput<T extends FieldValues>({
   formData,
-}: {
-  formData: UseFormReturn<{
-    name: string;
-    description?: string | undefined;
-  }>;
-}) {
+  name,
+  label,
+}: Props<T>) {
   const description = useWatch({
     control: formData.control,
-    name: "description",
+    name: name,
   });
   return (
     <div className="flex flex-col gap-2 w-full">
       <div className="flex justify-between">
         <label
-          htmlFor="description"
+          htmlFor={name}
           className="uppercase text-xs text-text-muted font-bold pl-1"
         >
-          Description
+          {label}
         </label>
         <p className="hidden md:block text-xs text-text-muted/60">Optional</p>
       </div>
       <textarea
-        {...formData.register("description")}
-        name="description"
-        id="description"
+        {...formData.register(name)}
+        name={name}
+        id={name}
         placeholder="Provide a high-level overview of the project's architectural objectives and key milestones..."
         maxLength={500}
         className={clsx(
@@ -53,9 +56,9 @@ function TextAreaInput({
           {description ? description.length : 0} / 500 characters
         </p>
       </div>
-      {formData.formState.errors.description && (
+      {formData.formState.errors[name] && (
         <p className="w-full rounded-sm bg-bg-error pb-3.5 pt-3.5 pr-4 pl-4 text-sm text-error">
-          {formData.formState.errors.description?.message as string}
+          {formData.formState.errors[name]?.message as string}
         </p>
       )}
     </div>
