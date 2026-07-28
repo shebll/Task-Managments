@@ -4,9 +4,16 @@ import Link from "next/link";
 import { PlusCircle } from "lucide-react";
 import { formatDate } from "../lib/helper/formatDate";
 import { getProjects } from "../api/projects-server-api";
+import { ProjectsData } from "../types/types";
+import ErrorApi from "@/components/shared/ErrorApi";
 
 async function ListProjects() {
-  const projects = await getProjects();
+  let projects: ProjectsData;
+  try {
+    projects = await getProjects();
+  } catch (error) {
+    return <ErrorApi />;
+  }
 
   if (projects.length === 0)
     return (
