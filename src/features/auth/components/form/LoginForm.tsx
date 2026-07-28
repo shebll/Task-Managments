@@ -1,62 +1,58 @@
 "use client";
 import FormFooter from "@/features/auth/components/ui/FormFooter";
 import { loginType } from "@/features/auth/types/types";
-import FormField from "./FormField";
+import FormField from "../FormField";
 
 import Button from "@/components/ui/Button";
 
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema } from "../schema/login-schema";
-import { useLogin } from "../hooks/use-login";
-import { useAuth } from "../hooks/use-auth";
+import { loginSchema } from "../../schema/login-schema";
+import { useAuth } from "../../hooks/use-auth";
 import { useRouter } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 
 import { useMediaQuery } from "usehooks-ts";
+import { login } from "../../api/auth-api";
 
 function LoginFrom() {
   const isDesktop = useMediaQuery("(min-width: 768px)", {
     initializeWithValue: false,
   });
   const router = useRouter();
-  const { login } = useAuth();
-  const loginMutation = useLogin();
+  const { login: loginLocal } = useAuth();
 
-  const formdata = useForm<loginType>({
+  const formData = useForm<loginType>({
     resolver: zodResolver(loginSchema),
     mode: "onChange",
   });
 
-  const onSubmitHandler: SubmitHandler<loginType> = (data: loginType) => {
-    loginMutation.mutate(
-      { email: data.email, password: data.password },
-      {
-        onSuccess: (response) => {
-          login(
-            response.user,
-            response.access_token,
-            response.refresh_token,
-            data.rememberMe,
-          );
-          router.replace("/project");
-        },
-
-        onError: (error) => {
-          formdata.setError("root", { message: error.message });
-        },
-      },
-    );
+  const onSubmitHandler: SubmitHandler<loginType> = async (data: loginType) => {
+    try {
+      const response = await login(data);
+      loginLocal(
+        response.user,
+        response.access_token,
+        response.refresh_token,
+        data.rememberMe,
+      );
+      router.replace("/project");
+    } catch (error) {
+      console.log(error instanceof Error);
+      if (error instanceof Error) {
+        formData.setError("root", { message: error.message });
+      } else {
+        formData.setError("root", { message: "Something Went Wrong !" });
+      }
+    }
   };
   return (
     <form
-      onSubmit={formdata.handleSubmit(onSubmitHandler)}
+      onSubmit={formData.handleSubmit(onSubmitHandler)}
       className="flex flex-col items-center gap-6 w-full md:w-120  "
     >
-      {/* Form Fields */}
-
       <FormField
-        formdata={formdata}
+        formData={formData}
         label={isDesktop ? "Email" : "Email Address"}
         name="email"
         type="email"
@@ -65,7 +61,7 @@ function LoginFrom() {
         }
       />
       <FormField
-        formdata={formdata}
+        formData={formData}
         label="Password"
         name="password"
         type="password"
@@ -76,7 +72,7 @@ function LoginFrom() {
           <input
             type="checkbox"
 
-            {...formdata.register("rememberMe")}
+            {...formData.register("rememberMe")}
             className="size-4 rounded border border-border-checkbox accent-accent-checkbox cursor-pointer"
           />
 
@@ -90,9 +86,8 @@ function LoginFrom() {
         </a>
       </div>
 
-      {/* Submit Button */}
       <Button
-        loading={loginMutation.isPending}
+        loading={formData.formState.isSubmitting}
         variant="primary"
         className="w-full"
       >
@@ -100,14 +95,13 @@ function LoginFrom() {
         <ArrowRight size={24} />
       </Button>
 
-      {formdata.formState.errors.root && (
+      {formData.formState.errors.root && (
         <p className="w-full rounded-sm bg-bg-error pb-3.5 pt-3.5 pr-4 pl-4 text-sm text-error">
-          {formdata.formState.errors.root.message}
+          {formData.formState.errors.root.message}
         </p>
       )}
 
       <div className="w-full border-t mt-6 border-border-divider flex justify-center">
-        {/* Form Footer */}
         <FormFooter
           text="Don't have an account? "
           linkText="Sign Up"

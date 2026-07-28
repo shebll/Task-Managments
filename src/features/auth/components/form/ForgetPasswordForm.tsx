@@ -1,21 +1,18 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { forgetPasswordType } from "../types/types";
-import { forgetPasswordSchema } from "../schema/reset-password-schema";
+import { forgetPasswordType } from "../../types/types";
+import { forgetPasswordSchema } from "../../schema/reset-password-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import FormField from "./FormField";
+import FormField from "../FormField";
 import Button from "@/components/ui/Button";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { useForgetPassword } from "../hooks/use-forget-password";
-import { forgetPasswordStorage } from "../lib/forgetPasswordStorage";
-import SuccessSection from "./ui/SuccessSection";
+import SuccessSection from "../SuccessSection";
+import { forgetPassword } from "../../api/auth-api";
 
 function ForgetPasswordForm() {
   // helper for get data from local
-  const { setForgetPasswordData, getForgetPasswordData } =
-    forgetPasswordStorage;
 
   // state for showing timer and resend button and limit and errors default false
   const [isEmailSent, setIsEmailSent] = useState(false);
@@ -31,30 +28,10 @@ function ForgetPasswordForm() {
   });
 
   // forget password api call
-  const forgetPasswordMutation = useForgetPassword();
 
   // boolean value for can send and resend
   const canResend =
-    timeLeft === 0 && resendCount < 3 && !forgetPasswordMutation.isPending;
-
-  // formate time left
-  const minutes = String(Math.floor(timeLeft / 60)).padStart(2, "0");
-  const seconds = String(timeLeft % 60).padStart(2, "0");
-
-  // Effect for getting forget password form local (helper)
-  useEffect(() => {
-    const data = getForgetPasswordData();
-    if (!data) return;
-    formData.setValue("email", data.email);
-    setResendCount(data.resendCount);
-    setIsEmailSent(true);
-    // if expireAt in past it will return -32 and get the bigger the zero
-    const remaining = Math.max(
-      0,
-      Math.floor((data.expireAt - Date.now()) / 1000) /* convert in seconds */,
-    );
-    setTimeLeft(remaining);
-  }, []);
+    timeLeft === 0 && resendCount < 3 && !formData.formState.isSubmitting;
 
   // timer
   useEffect(() => {
@@ -74,30 +51,23 @@ function ForgetPasswordForm() {
     return () => clearInterval(interval);
   }, [timeLeft]);
 
-  const handleForgetPassword: SubmitHandler<forgetPasswordType> = (
+  const handleForgetPassword: SubmitHandler<forgetPasswordType> = async (
     data: forgetPasswordType,
   ) => {
-    forgetPasswordMutation.mutate(data, {
-      onSuccess: () => {
-        const nextCount = resendCount + 1;
-        const expireAt = Date.now() + 5 * 60 * 1000;
-
-        setResendCount(nextCount);
-        setTimeLeft(300);
-        setIsEmailSent(true);
-
-        setForgetPasswordData({
-          email: data.email,
-          resendCount: nextCount,
-          expireAt,
-        });
-      },
-      onError: (error) => {
-        formData.setError("root", {
-          message: error.message ? error.message : "network error",
-        });
-      },
-    });
+    try {
+      await forgetPassword(data);
+      const nextCount = resendCount + 1;
+      setResendCount(nextCount);
+      setTimeLeft(20);
+      setIsEmailSent(true);
+    } catch (error) {
+      console.log(error instanceof Error);
+      if (error instanceof Error) {
+        formData.setError("root", { message: error.message });
+      } else {
+        formData.setError("root", { message: "Something Went Wrong !" });
+      }
+    }
   };
   return (
     <form
@@ -105,7 +75,7 @@ function ForgetPasswordForm() {
       className="flex flex-col gap-6 w-full md:w-md"
     >
       <FormField
-        formdata={formData}
+        formData={formData}
         type="email"
         name="email"
         label="Email address"
@@ -113,7 +83,7 @@ function ForgetPasswordForm() {
       />
       <Button
         disabled={!canResend}
-        loading={forgetPasswordMutation.isPending}
+        loading={formData.formState.isSubmitting}
         variant="primary"
         className="w-full"
       >
@@ -135,9 +105,8 @@ function ForgetPasswordForm() {
         <SuccessSection
           canResend={canResend}
           resendCount={resendCount}
-          minutes={minutes}
-          seconds={seconds}
-          isPending={forgetPasswordMutation.isPending}
+          timeLeft={timeLeft}
+          isPending={formData.formState.isSubmitting}
           onResend={formData.handleSubmit(handleForgetPassword)}
         />
       )}

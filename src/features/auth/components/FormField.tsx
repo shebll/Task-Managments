@@ -6,21 +6,21 @@ import PasswordInput from "@/components/ui/PasswordInput";
 import Input from "@/components/ui/Input";
 
 type Props<T extends FieldValues> = {
-  formdata: UseFormReturn<T>;
+  formData: UseFormReturn<T>;
   name: Path<T>;
   label: string;
   hint?: string;
 } & InputHTMLAttributes<HTMLInputElement>;
 
 function FormField<T extends FieldValues>({
-  formdata,
+  formData,
   label,
   name,
   type,
   hint,
   placeholder,
 }: Props<T>) {
-  const error = formdata.formState.errors[name];
+  const error = formData.formState.errors[name];
 
   const InputComponent = name == "password" ? PasswordInput : Input;
 
@@ -40,7 +40,7 @@ function FormField<T extends FieldValues>({
             type={type}
             id={name}
             placeholder={placeholder}
-            {...formdata.register(name)}
+            {...formData.register(name)}
           />
         </div>
 
@@ -48,7 +48,7 @@ function FormField<T extends FieldValues>({
           <p className="text-xs text-text-hint font-normal pl-1">{hint}</p>
         )}
         {error && (
-          <p className="w-full rounded-sm bg-bg-error pb-3.5 pt-3.5 pr-4 pl-4 text-sm text-error">
+          <p className="w-full rounded-sm bg-bg-error py-2.5 px-3 text-sm text-error">
             {error?.message as string}
           </p>
         )}

@@ -1,5 +1,5 @@
 import SectionTitle from "@/components/shared/SectionTitle";
-import ForgetPasswordForm from "@/features/auth/components/ForgetPasswordForm";
+import ForgetPasswordForm from "@/features/auth/components/form/ForgetPasswordForm";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

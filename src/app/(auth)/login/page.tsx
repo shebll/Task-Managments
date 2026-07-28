@@ -1,5 +1,5 @@
 import SectionTitle from "@/components/shared/SectionTitle";
-import LoginFrom from "@/features/auth/components/LoginForm";
+import LoginFrom from "@/features/auth/components/form/LoginForm";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

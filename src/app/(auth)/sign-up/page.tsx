@@ -1,4 +1,4 @@
-import FormComponent from "@/features/auth/components/SignUpFormComponent";
+import FormComponent from "@/features/auth/components/form/SignUpFormComponent";
 import SectionTitle from "@/components/shared/SectionTitle";
 import type { Metadata } from "next";
 

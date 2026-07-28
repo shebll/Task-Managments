@@ -1,5 +1,5 @@
 import SectionTitle from "@/components/shared/SectionTitle";
-import RestPasswordFrom from "@/features/auth/components/RestPasswordFrom";
+import RestPasswordFrom from "@/features/auth/components/form/RestPasswordFrom";
 import ErrorCard from "@/features/auth/components/ui/ErrorCard";
 import type { Metadata } from "next";
 

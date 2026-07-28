@@ -1,27 +1,23 @@
 "use client";
-
-import FormField from "./FormField";
-
 import { SubmitHandler, useForm, useWatch } from "react-hook-form";
-
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { useResetPassword } from "../hooks/use-reset-password";
-import { resetPasswordSchema } from "../schema/restPasswordSchema";
-import { useState } from "react";
-import NewPasswordRequirements from "./NewPasswordRequirements";
-import { resetPasswordType } from "../types/types";
+
+import { resetPasswordSchema } from "../../schema/restPasswordSchema";
+import { resetPasswordType } from "../../types/types";
+
+import NewPasswordRequirements from "../NewPasswordRequirements";
 import Button from "@/components/ui/Button";
-import FormFooter from "./ui/FormFooter";
+import FormFooter from "../ui/FormFooter";
+import FormField from "../FormField";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+
+import { resetPassword } from "../../api/auth-api";
 
 function RestPasswordFrom() {
   const router = useRouter();
-  const [isSuccess, setIsSuccess] = useState(false);
-  const resetPasswordMutation = useResetPassword();
 
-  // Read tokens from sessionStorage synchronously during initialization.
-  // sessionStorage is synchronous and browser-only, so this avoids
-  // useEffect + cascading setState calls (avoids React anti-pattern).
   const [accessToken] = useState<string | null>(() => {
     if (typeof window === "undefined") return null;
     const token = sessionStorage.getItem("recovery_access_token");
@@ -33,39 +29,34 @@ function RestPasswordFrom() {
     return token;
   });
 
-  // Derived state — no additional useState needed
   const hasTokenError = !accessToken;
 
-  const formdata = useForm<resetPasswordType>({
+  const formData = useForm<resetPasswordType>({
     resolver: zodResolver(resetPasswordSchema),
     mode: "onChange",
   });
   const password = useWatch({
-    control: formdata.control,
+    control: formData.control,
     name: "password",
   });
 
-  const onSubmitHandler: SubmitHandler<resetPasswordType> = (
+  const onSubmitHandler: SubmitHandler<resetPasswordType> = async (
     data: resetPasswordType,
   ) => {
     if (!accessToken) return;
-
-    resetPasswordMutation.mutate(
-      { data: { password: data.password }, accessToken },
-      {
-        onSuccess: () => {
-          setIsSuccess(true);
-
-          setTimeout(() => {
-            router.replace("/login");
-          }, 3000);
-        },
-
-        onError: (error) => {
-          formdata.setError("root", { message: error.message });
-        },
-      },
-    );
+    try {
+      await resetPassword(data, accessToken);
+      setTimeout(() => {
+        router.replace("/login");
+      }, 3000);
+    } catch (error) {
+      console.log(error instanceof Error);
+      if (error instanceof Error) {
+        formData.setError("root", { message: error.message });
+      } else {
+        formData.setError("root", { message: "Something Went Wrong !" });
+      }
+    }
   };
 
   if (hasTokenError) {
@@ -78,20 +69,20 @@ function RestPasswordFrom() {
 
   return (
     <form
-      onSubmit={formdata.handleSubmit(onSubmitHandler)}
+      onSubmit={formData.handleSubmit(onSubmitHandler)}
       className="flex flex-col items-center gap-6 max-w-120 w-full"
     >
       {/* Form Fields */}
 
       <FormField
-        formdata={formdata}
+        formData={formData}
         label="Password"
         name="password"
         type="password"
         placeholder={"Password"}
       />
       <FormField
-        formdata={formdata}
+        formData={formData}
         label="Confirm Password"
         name="confirmPassword"
         type="password"
@@ -102,20 +93,20 @@ function RestPasswordFrom() {
       <NewPasswordRequirements password={password} />
 
       {/* Submit Button */}
-      {formdata.formState.errors.root && (
+      {formData.formState.errors.root && (
         <p className="w-full rounded-sm bg-bg-error pb-3.5 pt-3.5 pr-4 pl-4 text-sm text-error">
-          {formdata.formState.errors.root.message}
+          {formData.formState.errors.root.message}
         </p>
       )}
       <Button
-        loading={resetPasswordMutation.isPending}
+        loading={formData.formState.isSubmitting}
         variant="primary"
         className="w-full"
       >
         Update Password
       </Button>
-      {isSuccess && (
-        <p className="w-full rounded-sm bg-status-success-bg p-4 text-sm text-text-success ">
+      {formData.formState.isSubmitSuccessful && (
+        <p className="w-full rounded-sm bg-status-success-bg p-4 text-sm text-text-success text-center">
           Your password has been updated successfully. <br /> You can now log in
         </p>
       )}

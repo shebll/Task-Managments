@@ -6,6 +6,9 @@ export const getProjectById = (id: string) => {
     `/rest/v1/rpc/get_projects?id=eq.${id}`,
     {
       method: "GET",
+      next: {
+        tags: [`project-${id}`],
+      },
     },
   );
 };
@@ -13,6 +16,8 @@ export const getProjectById = (id: string) => {
 export const getProjects = () => {
   return serverApiClient<ProjectsData>("/rest/v1/rpc/get_projects", {
     method: "GET",
-    cache: "no-cache",
+    next: {
+      tags: ["project"],
+    },
   });
 };
