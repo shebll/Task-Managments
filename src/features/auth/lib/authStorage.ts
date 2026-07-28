@@ -1,4 +1,3 @@
-import { getCookie, setCookie, deleteCookie } from "cookies-next";
 import { User } from "../types/types";
 
 export const authStorage = {
@@ -32,3 +31,26 @@ export const authStorage = {
 
   clearUserData: () => localStorage.removeItem("userData"),
 };
+function getCookie(name: string): string | undefined {
+  if (typeof document === "undefined") return undefined;
+
+  const value = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith(`${name}=`));
+
+  return value?.split("=")[1];
+}
+
+function setCookie(name: string, value: string, options?: { maxAge?: number }) {
+  let cookie = `${name}=${encodeURIComponent(value)}; path=/`;
+
+  if (options?.maxAge) {
+    cookie += `; max-age=${options.maxAge}`;
+  }
+
+  document.cookie = cookie;
+}
+
+function deleteCookie(name: string) {
+  document.cookie = `${name}=; Max-Age=0; path=/`;
+}

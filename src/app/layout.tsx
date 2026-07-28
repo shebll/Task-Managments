@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import { ToastProvider } from "@/provider/ToastProvider";
 import { Inter } from "next/font/google";
+import type { Metadata } from "next";
 import "@/style/globals.css";
-import { Toaster } from "sonner";
+
 const geistInter = Inter({
   variable: "--font-geist-inter",
   subsets: ["latin"],
@@ -69,8 +70,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${geistInter.variable} h-full antialiased`}>
       <body className="min-h-screen  bg-background text-foreground ">
-        {children}
-        <Toaster position="top-right" richColors closeButton duration={4000} />
+        <ToastProvider>{children}</ToastProvider>
       </body>
     </html>
   );

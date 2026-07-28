@@ -10,8 +10,11 @@ import Image from "next/image";
 import Link from "next/link";
 import TextAreaInput from "./ui/TextAreaInput";
 import { addProject, updateProject } from "../api/projects-client-api";
+import { useToast } from "@/provider/ToastProvider";
 
 function ProjectForm({ projectData }: { projectData?: ProjectsData }) {
+  const { showToast } = useToast();
+
   const formData = useForm<AddProjectType>({
     defaultValues: projectData
       ? {
@@ -27,8 +30,15 @@ function ProjectForm({ projectData }: { projectData?: ProjectsData }) {
     data: AddProjectType,
   ) => {
     try {
-      if (projectData) await updateProject(data, projectData[0].id);
-      if (!projectData) await addProject(data);
+      if (projectData) {
+        await updateProject(data, projectData[0].id);
+        showToast("Project updated successfully");
+        showToast("Project updated successfully");
+      }
+      if (!projectData) {
+        await addProject(data);
+        showToast("Project created successfully");
+      }
     } catch (error) {
       console.log(error instanceof Error);
       if (error instanceof Error) {
