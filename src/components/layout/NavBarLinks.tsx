@@ -7,7 +7,6 @@ import { useParams, usePathname } from "next/navigation";
 function NavBarLinks({ sidebarCollapsed }: { sidebarCollapsed: boolean }) {
   const pathname = usePathname();
   const params = useParams();
-  console.log(pathname, params);
 
   const projectId = params.projectId as string | undefined;
   const links = dashboardLinks.map((item) => ({
