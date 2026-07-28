@@ -8,6 +8,7 @@ type Props = {
     projectId: string;
   }>;
 };
+export const dynamic = "force-dynamic";
 async function page({ params }: Props) {
   const { projectId } = await params;
   return (
