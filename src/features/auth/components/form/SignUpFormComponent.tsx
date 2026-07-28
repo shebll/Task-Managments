@@ -12,13 +12,10 @@ import { SubmitHandler, useForm, useWatch } from "react-hook-form";
 
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../hooks/use-auth";
-import { useMediaQuery } from "usehooks-ts";
 import { signup } from "../../api/auth-api";
 
 function SignUpFormComponent() {
-  const isDesktop = useMediaQuery("(min-width: 768px)", {
-    initializeWithValue: false,
-  });
+  const isDesktop = true;
 
   const router = useRouter();
   const { login } = useAuth();

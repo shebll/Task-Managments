@@ -12,13 +12,10 @@ import { useAuth } from "../../hooks/use-auth";
 import { useRouter } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 
-import { useMediaQuery } from "usehooks-ts";
 import { login } from "../../api/auth-api";
 
 function LoginFrom() {
-  const isDesktop = useMediaQuery("(min-width: 768px)", {
-    initializeWithValue: false,
-  });
+  const isDesktop = true;
   const router = useRouter();
   const { login: loginLocal } = useAuth();
 
