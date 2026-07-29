@@ -84,7 +84,11 @@ function ProjectForm({ projectData }: { projectData?: ProjectsData }) {
             maxLength={100}
             placeholder="Project title"
           />
-          <TextAreaInput formData={formData} />
+          <TextAreaInput
+            formData={formData}
+            name="description"
+            label="description"
+          />
 
           {formData.formState.errors.root && (
             <p className="w-full rounded-sm bg-bg-error pb-3.5 pt-3.5 pr-4 pl-4 text-sm text-error">
