@@ -2,18 +2,17 @@
 
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Image from "next/image";
 import Link from "next/link";
 
 import Button from "@/components/ui/Button";
 import FormField from "@/features/auth/components/FormField";
 import { useToast } from "@/provider/ToastProvider";
 
-import { EpicFormValues, EpicResponse } from "../types/Epic";
-import { epicSchema } from "../schema/add-epic-schema";
-import { createEpic, updateEpic } from "../api/epic-api";
+import { EpicFormValues, EpicResponse } from "../../types/Epic";
+import { epicSchema } from "../../schema/add-epic-schema";
+import { createEpic, updateEpic } from "../../api/epic-api";
 import TextAreaInput from "@/features/projects/components/ui/TextAreaInput";
-import SelectField from "./SelectField";
+import SelectField from "../ui/SelectField";
 import { MembersResponse } from "@/features/members/types/Member";
 
 type Props = {
@@ -76,7 +75,7 @@ export default function EpicForm({ projectId, epic, members }: Props) {
   return (
     <form
       onSubmit={form.handleSubmit(onSubmit)}
-      className="flex flex-col gap-6 bg-card-background p-10 max-w-4xl w-full"
+      className="flex flex-col gap-8 bg-card-background p-8 w-full shadow-md rounded-md"
     >
       <FormField
         formData={form}
@@ -92,18 +91,25 @@ export default function EpicForm({ projectId, epic, members }: Props) {
         placeholder="Describe the scope and objectives of this epic..."
       />
 
-      <SelectField
-        formData={form}
-        name="assignee_id"
-        label="Assignee"
-        placeholder="Select member"
-        options={members.map((member) => ({
-          label: member.metadata.name,
-          value: member.user_id,
-        }))}
-      />
+      <div className="flex items-start gap-2">
+        <SelectField
+          formData={form}
+          name="assignee_id"
+          label="Assignee"
+          placeholder="Select member"
+          options={members.map((member) => ({
+            label: member.metadata.name,
+            value: member.user_id,
+          }))}
+        />
 
-      <FormField formData={form} name="deadline" type="date" label="Deadline" />
+        <FormField
+          formData={form}
+          name="deadline"
+          type="date"
+          label="Deadline"
+        />
+      </div>
 
       {form.formState.errors.root && (
         <p className="rounded-sm bg-bg-error p-4 text-error">
@@ -111,7 +117,7 @@ export default function EpicForm({ projectId, epic, members }: Props) {
         </p>
       )}
 
-      <div className="flex justify-between">
+      <div className="flex justify-end gap-4">
         <Link href={`/project/${projectId}/epics`}>
           <Button variant="secondary">Cancel</Button>
         </Link>
