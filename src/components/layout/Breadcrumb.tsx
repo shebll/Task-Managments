@@ -10,7 +10,12 @@ function Breadcrumb({ projectName }: Props) {
     <div className="font-bold text-xs text-text-muted">
       {`PROJECTS  > ${projectName.toUpperCase()} > `}
       <span className="text-primary">
-        {pathName.split("/").pop()?.toUpperCase()}
+        {pathName.split("/")[3].toUpperCase()}
+      </span>
+
+      <span className="text-primary">
+        {pathName.split("/")[4] &&
+          ` >  ${pathName.split("/")[4].toUpperCase()}`}
       </span>
     </div>
   );
