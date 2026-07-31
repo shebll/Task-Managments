@@ -16,7 +16,7 @@ export function MemberAvatar({ name, className }: MemberAvatarProps) {
   return (
     <div
       className={clsx(
-        "flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-200 font-semibold text-slate-900",
+        "flex p-3.5 items-center justify-center rounded-xl bg-emerald-200 font-semibold text-slate-900",
         className,
       )}
     >
