@@ -1,5 +1,10 @@
 import { apiClient } from "@/lib/api/api-client";
-import { CreateEpicRequest, UpdateEpicRequest } from "../types/Epic";
+import {
+  CreateEpicRequest,
+  EpicsResponse,
+  UpdateEpicRequest,
+} from "../types/Epic";
+import { MembersResponse } from "@/features/members/types/Member";
 
 export function createEpic(data: CreateEpicRequest) {
   return apiClient<void>("/rest/v1/epics", {
@@ -10,7 +15,27 @@ export function createEpic(data: CreateEpicRequest) {
 
 export function updateEpic(epicId: string, data: UpdateEpicRequest) {
   return apiClient<void>(`/rest/v1/epics?id=eq.${epicId}`, {
-    method: "PUT",
+    method: "PATCH",
     body: JSON.stringify(data),
   });
+}
+
+export function getEpicDetails(epicId: string, projectId: string) {
+  return apiClient<EpicsResponse>(
+    `/rest/v1/project_epics?project_id=eq.${projectId}&id=${epicId}`,
+    {
+      method: "GET",
+    },
+  );
+}
+export function getMembersClient(projectId: string) {
+  return apiClient<MembersResponse>(
+    `/rest/v1/get_project_members?project_id=eq.${projectId}`,
+    {
+      method: "GET",
+      next: {
+        tags: [`member-${projectId}`],
+      },
+    },
+  );
 }
