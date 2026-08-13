@@ -6,8 +6,13 @@ import Link from "next/link";
 import { Suspense } from "react";
 
 export const dynamic = "force-dynamic";
+interface ProjectPageProps {
+  searchParams: Promise<{
+    page?: string;
+  }>;
+}
 
-async function Projects() {
+async function Projects({ searchParams }: ProjectPageProps) {
   return (
     <div className="h-full flex flex-col gap-10">
       <div className="flex justify-between items-end ">
@@ -26,7 +31,7 @@ async function Projects() {
         </Link>
       </div>
       <Suspense fallback={<ProjectSkeleton />}>
-        <ListProjects />
+        <ListProjects searchParams={searchParams} />
       </Suspense>
     </div>
   );
