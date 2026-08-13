@@ -4,10 +4,48 @@ import { clearSession, getSession } from "./session";
 const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 const API_KEY = process.env.NEXT_PUBLIC_API_KEY!;
 
+type ServerApiOptions = RequestInit & {
+  includeResponse?: boolean;
+  paginated?: boolean;
+};
+
+type ServerApiResponse<T> = {
+  data: T;
+  response: Response;
+};
+
+export type PaginatedResponse<T> = {
+  data: T;
+  total: number;
+  start: number;
+  end: number;
+};
+
+function parseContentRange(contentRange: string | null) {
+  if (!contentRange) {
+    throw new Error("Content-Range header is missing");
+  }
+
+  const [range, totalCount] = contentRange.split("/");
+
+  if (!range || !totalCount) {
+    throw new Error("Invalid Content-Range header");
+  }
+
+  const [start, end] = range.split("-").map(Number);
+  const total = Number(totalCount);
+
+  if (Number.isNaN(start) || Number.isNaN(end) || Number.isNaN(total)) {
+    throw new Error("Invalid Content-Range header");
+  }
+
+  return { start, end, total };
+}
+
 export async function serverApiClient<T>(
   endpoint: string,
-  options?: RequestInit,
-): Promise<T> {
+  options?: ServerApiOptions,
+): Promise<T | ServerApiResponse<T> | PaginatedResponse<T>> {
   const session = await getSession();
 
   if (!session) {
@@ -15,15 +53,19 @@ export async function serverApiClient<T>(
   }
 
   let accessToken = session.accessToken;
+  const { includeResponse, paginated, ...fetchOptions } = options ?? {};
+
+  const buildHeaders = (token: string | undefined) => ({
+    Apikey: API_KEY,
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+    ...(paginated ? { Prefer: "count=exact" } : {}),
+    ...fetchOptions.headers,
+  });
 
   let response = await fetch(`${API_URL}${endpoint}`, {
-    ...options,
-    headers: {
-      Apikey: API_KEY,
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-      ...options?.headers,
-    },
+    ...fetchOptions,
+    headers: buildHeaders(accessToken),
   });
 
   if (response.status === 401) {
@@ -31,13 +73,8 @@ export async function serverApiClient<T>(
       accessToken = await refreshAccessToken();
 
       response = await fetch(`${API_URL}${endpoint}`, {
-        ...options,
-        headers: {
-          Apikey: API_KEY,
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-          ...options?.headers,
-        },
+        ...fetchOptions,
+        headers: buildHeaders(accessToken),
       });
     } catch (error) {
       await clearSession();
@@ -47,6 +84,13 @@ export async function serverApiClient<T>(
   }
 
   if (response.status === 201) {
+    if (includeResponse) {
+      return {
+        data: undefined as T,
+        response,
+      };
+    }
+
     return undefined as T;
   }
 
@@ -56,5 +100,25 @@ export async function serverApiClient<T>(
     throw new Error(data.msg ?? "Something went wrong");
   }
 
-  return data;
+  if (paginated) {
+    const { start, end, total } = parseContentRange(
+      response.headers.get("Content-Range"),
+    );
+
+    return {
+      data,
+      total,
+      start,
+      end,
+    } as PaginatedResponse<T>;
+  }
+
+  if (includeResponse) {
+    return {
+      data,
+      response,
+    } as ServerApiResponse<T>;
+  }
+
+  return data as T;
 }
