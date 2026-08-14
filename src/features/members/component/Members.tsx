@@ -6,7 +6,7 @@ import { MemberList } from "./MemberList";
 async function Members({ projectId }: { projectId: string }) {
   let members: MembersResponse;
   try {
-    members = await getMembers(projectId);
+    members = (await getMembers(projectId)) as MembersResponse;
   } catch (error) {
     return <ErrorApi />;
   }
