@@ -39,3 +39,22 @@ export function getMembersClient(projectId: string) {
     },
   );
 }
+
+export const getEpicsClient = async (
+  projectId: string,
+  limit: number,
+  offset: number,
+): Promise<{ epics: EpicsResponse; total: number }> => {
+  const response = (await apiClient<EpicsResponse>(
+    `/rest/v1/project_epics?project_id=eq.${projectId}&limit=${limit}&offset=${offset}`,
+    {
+      method: "GET",
+      paginated: true,
+    },
+  )) as { data: EpicsResponse; total: number };
+
+  return {
+    epics: response.data,
+    total: response.total,
+  };
+};
