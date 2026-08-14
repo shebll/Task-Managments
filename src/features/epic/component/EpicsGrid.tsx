@@ -53,9 +53,6 @@ export default function EpicsGrid({ epics }: Props) {
         ))}
       </div>
 
-      <p className="text-sm text-text-secondary">
-        Showing {epics.length} epics
-      </p>
       {selectedEpic && (
         <EpicDetailsModal
           epic={selectedEpic}
