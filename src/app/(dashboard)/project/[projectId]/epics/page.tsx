@@ -6,14 +6,17 @@ type Props = {
   params: Promise<{
     projectId: string;
   }>;
+  searchParams: Promise<{
+    page?: string;
+  }>;
 };
-async function page({ params }: Props) {
+async function page({ params, searchParams }: Props) {
   const { projectId } = await params;
   return (
     <div className="h-full flex flex-col gap-10">
       <EpicHeader projectId={projectId} />
       <Suspense fallback={<EpicSkeleton />}>
-        <ListEpic projectId={projectId} />
+        <ListEpic projectId={projectId} searchParams={searchParams} />
       </Suspense>
     </div>
   );

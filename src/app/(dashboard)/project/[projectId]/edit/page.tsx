@@ -1,5 +1,6 @@
 import { getProjectById } from "@/features/projects/api/projects-server-api";
 import ProjectForm from "@/features/projects/components/ProjectForm";
+import { ProjectsData } from "@/features/projects/types/types";
 import React from "react";
 type Props = {
   params: Promise<{
@@ -13,7 +14,7 @@ async function page({ params }: Props) {
   return (
     <div className="h-full flex flex-col gap-10">
       <h1 className="text-4xl font-semibold ">Update Project</h1>
-      <ProjectForm projectData={project} />
+      <ProjectForm projectData={project as ProjectsData} />
     </div>
   );
 }
