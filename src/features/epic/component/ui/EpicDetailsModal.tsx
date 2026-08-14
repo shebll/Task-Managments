@@ -2,6 +2,8 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
+import Image from "next/image";
 
 import Button from "@/components/ui/Button";
 
@@ -14,8 +16,6 @@ import {
 
 import { formatDate } from "../../lib/helper";
 import { MemberAvatar } from "@/features/members/component/ui/MemberAvatar";
-import Image from "next/image";
-import { getMembers } from "@/features/members/api/getMember";
 import SelectField from "./SelectField";
 import { useEffect, useState } from "react";
 import { MemberResponse } from "@/features/members/types/Member";
@@ -213,9 +213,13 @@ export default function EpicDetailsModal({
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold">Tasks</h3>
 
-            <Button type="button" variant="secondary">
-              + Add Task
-            </Button>
+            <Link
+              href={`/project/${epic.project_id}/tasks/new?epicId=${epic.id}`}
+            >
+              <Button type="button" variant="secondary">
+                + Add Task
+              </Button>
+            </Link>
           </div>
 
           <div className="flex flex-col gap-4 p-10  items-center justify-center rounded-xl border border-dashed border-border-divider bg-[#F1F3FF]">
@@ -232,24 +236,15 @@ export default function EpicDetailsModal({
                 No tasks have been added to this epic yet
               </p>
             </div>
-            <Button type="button" variant="primary">
-              + Add Task
-            </Button>
+            <Link
+              href={`/project/${epic.project_id}/tasks/new?epicId=${epic.id}`}
+            >
+              <Button type="button" variant="primary">
+                + Add Task
+              </Button>
+            </Link>
           </div>
         </section>
-        {/* <div className="flex justify-end gap-3 border-t border-border-divider px-8 py-5">
-          <Button type="button" variant="secondary" onClick={onClose}>
-            Cancel
-          </Button>
-
-          <Button
-            type="submit"
-            variant="primary"
-            loading={form.formState.isSubmitting}
-          >
-            Save Changes
-          </Button>
-        </div> */}
       </form>
     </div>
   );
