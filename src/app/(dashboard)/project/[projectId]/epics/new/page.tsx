@@ -11,7 +11,7 @@ async function page({ params }: Props) {
   const { projectId } = await params;
   let members: MembersResponse;
   try {
-    members = await getMembers(projectId);
+    members = (await getMembers(projectId)) as MembersResponse;
   } catch (error) {
     return <ErrorApi />;
   }
