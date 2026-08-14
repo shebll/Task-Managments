@@ -32,3 +32,17 @@ export const getEpics = async (
     end: response.end,
   };
 };
+
+export const getAllEpics = async (
+  projectId: string,
+): Promise<EpicsResponse> => {
+  return (await serverApiClient<EpicsResponse>(
+    `/rest/v1/project_epics?project_id=eq.${projectId}&select=id,epic_id,title`,
+    {
+      method: "GET",
+      next: {
+        tags: ["project"],
+      },
+    },
+  )) as EpicsResponse;
+};
